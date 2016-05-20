@@ -3,7 +3,7 @@ unit unPassword;
 interface
 
 uses Winapi.Windows, System.SysUtils, System.Classes, Vcl.Graphics, Vcl.Forms,
-  Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons;
+  Vcl.Controls, Vcl.StdCtrls, Vcl.Buttons, Vcl.Imaging.pngimage, Vcl.ExtCtrls;
 
 type
   TfrmPassword = class(TForm)
@@ -12,6 +12,7 @@ type
     OKBtn: TButton;
     CancelBtn: TButton;
     lblError: TLabel;
+    Image1: TImage;
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
@@ -23,6 +24,8 @@ var
   frmPassword: TfrmPassword;
 
 implementation
+
+uses unMainDM;
 
 function VerifyPassword(pass: string): boolean;
 begin

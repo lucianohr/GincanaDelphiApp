@@ -3,25 +3,29 @@ object frmPassword: TfrmPassword
   Top = 108
   BorderStyle = bsDialog
   Caption = 'Autoriza'#231#227'o'
-  ClientHeight = 101
-  ClientWidth = 233
+  ClientHeight = 109
+  ClientWidth = 287
   Color = clBtnFace
-  ParentFont = True
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -15
+  Font.Name = 'Tahoma'
+  Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
   OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 18
   object Label1: TLabel
-    Left = 8
-    Top = 9
-    Width = 134
-    Height = 13
+    Left = 62
+    Top = 8
+    Width = 186
+    Height = 18
     Caption = 'Informe a senha de acesso:'
   end
   object lblError: TLabel
-    Left = 8
-    Top = 52
+    Left = 62
+    Top = 58
     Width = 80
     Height = 13
     Caption = 'Senha incorreta!'
@@ -35,31 +39,67 @@ object frmPassword: TfrmPassword
     ParentFont = False
     Visible = False
   end
+  object Image1: TImage
+    Left = 7
+    Top = 8
+    Width = 48
+    Height = 48
+    AutoSize = True
+    Picture.Data = {
+      0954506E67496D61676589504E470D0A1A0A0000000D49484452000000300000
+      00300804000000FD0B310C000002844944415478DAED984968144114405FE28E
+      184524420C2A088A108C4494785121423CA8104404352E28C48B46BD05CDC110
+      97939A80E041418D0B049783E286082AA8F1A00E0645F4A0078907C5A0878859
+      C63FDD95909EAEAAAEE999400EF30F53D535FFD7ABFEBFEA57551730C252309A
+      0063D8C001294F7183FE5C038AD8CD3EE6A8A7AFB4728EDFB902CCA59E5D4C49
+      6BFDC3795AF8922D603907A911E7E8A59F5B9CE4453C80EFF1CA405B0F97A80B
+      69BEB445450F087ADC972ECE70969F24B516C6A884013A8F27648CD7F8E7D5F5
+      809468A31204843D9EE4AE78F971A0C526A1A8040141E31E2E729A8F695DD801
+      A15E4D80418F872527801D431E1F21806D75E40179401E9025A097B13900F432
+      DE04E8666A24E0AFE5BF09DEEF2FA69B009F9997C9EBA7C94CBE7BE527E69BD4
+      1F519505A04AEC53F2906A937A2B7BB30034D2E4952DEC37A9D7CAA61E1FF084
+      155EB95992BD417DB66CDE7101332402FE665BCA37B37A82453101F5B2BDA6E4
+      0D1536F54334C70214F241CD9D064ED8D44BE5D8613AC7D9001B69F7CA3E7173
+      975DBD5D9433058CA3538DFF2A5BA2D417F3DABA9275FF3570CC2B9312C1CE68
+      F536B6660428A74325890BEC74194F8904ACC819304DBAF7DDD3CD42952C2200
+      B05DC6E20698C83D56A97A2D97DD3C9A922BB21EA30193E5D83E9877DAD8E6E6
+      515F26F18C25118059DC6499AABF62A53E919BE74B314F5960B1A891B36BB1AA
+      BF97EE7FB8783428253CA04C6B51C671D60EB52458130EAE0B00D9DFAEB33AAD
+      6D934CC5EA6176F7A5C572DF8CBA04164A963FAC76EAB0F4714496D880AD0397
+      6B6CB978BB52D3FE9C3DBC8B3276BD88AF97F7583AECB983A3DC7631CCE45342
+      8524B275926FEEC89C7FEB6A34AA3E86C492FF3CED9E31974AE2650000000049
+      454E44AE426082}
+    Proportional = True
+  end
   object edtPassword: TEdit
-    Left = 8
-    Top = 27
+    Left = 62
+    Top = 32
     Width = 217
-    Height = 21
+    Height = 26
     PasswordChar = '*'
     TabOrder = 0
   end
   object OKBtn: TButton
-    Left = 70
-    Top = 68
-    Width = 75
-    Height = 25
+    Left = 91
+    Top = 74
+    Width = 91
+    Height = 31
     Caption = 'OK'
     Default = True
+    ImageIndex = 0
+    Images = dmMain.ImageList1
     ModalResult = 1
     TabOrder = 1
   end
   object CancelBtn: TButton
-    Left = 150
-    Top = 68
-    Width = 75
-    Height = 25
+    Left = 188
+    Top = 74
+    Width = 91
+    Height = 31
     Cancel = True
-    Caption = 'Cancel'
+    Caption = 'Cancelar'
+    ImageIndex = 1
+    Images = dmMain.ImageList1
     ModalResult = 2
     TabOrder = 2
   end
