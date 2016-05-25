@@ -13,6 +13,7 @@ object frmMainWindow: TfrmMainWindow
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 18
   object pnlActions: TPanel
@@ -72,11 +73,65 @@ object frmMainWindow: TfrmMainWindow
       Top = 13
       Width = 81
       Height = 33
-      Caption = 'Buscar'
+      Caption = '&Buscar'
       Default = True
       ImageIndex = 6
       Images = dmMain.ImageList1
       TabOrder = 3
     end
+  end
+  object DBGrid1: TDBGrid
+    AlignWithMargins = True
+    Left = 3
+    Top = 56
+    Width = 978
+    Height = 603
+    Align = alClient
+    BorderStyle = bsNone
+    DataSource = dmMain.dsItemsList
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -15
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 1
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -15
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = [fsBold]
+    OnTitleClick = DBGrid1TitleClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'id'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'box_number'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'year'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'description'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'created_at'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'updated_at'
+        Visible = True
+      end>
   end
 end

@@ -12,8 +12,8 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TfrmMainWindow, frmMainWindow);
   Application.CreateForm(TdmMain, dmMain);
+  Application.CreateForm(TfrmMainWindow, frmMainWindow);
   Application.CreateForm(TfrmPassword, frmPassword);
   if frmPassword.Showmodal = 1 then
   begin
