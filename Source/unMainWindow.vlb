@@ -16,9 +16,6 @@ Coordinates=309,10,83,58
 [dmMain.cdsItemsList]
 Coordinates=73,144,135,58
 
-[Button1]
-Coordinates=218,144,59,58
-
 [Label1]
 Coordinates=10,144,53,58
 
@@ -31,4 +28,7 @@ Visible=True
 
 []
 Coordinates=350,155,91,36
+
+[btnSearch]
+Coordinates=218,144,59,58
 

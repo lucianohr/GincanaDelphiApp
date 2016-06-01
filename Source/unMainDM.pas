@@ -26,7 +26,19 @@ type
     cdsItemsListdescription: TStringField;
     cdsItemsListcreated_at: TDateTimeField;
     cdsItemsListupdated_at: TDateTimeField;
+    qryItemsCRUD: TFDQuery;
+    dspItemsCRUD: TDataSetProvider;
+    cdsItemsCRUD: TClientDataSet;
+    dsItemsCRUD: TDataSource;
+    cdsItemsCRUDid: TAutoIncField;
+    cdsItemsCRUDbox_number: TIntegerField;
+    cdsItemsCRUDyear: TIntegerField;
+    cdsItemsCRUDdescription: TStringField;
+    cdsItemsCRUDkeywords: TMemoField;
+    cdsItemsCRUDcreated_at: TDateTimeField;
+    cdsItemsCRUDupdated_at: TDateTimeField;
     procedure DataModuleCreate(Sender: TObject);
+    procedure cdsItemsCRUDBeforePost(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -38,11 +50,33 @@ var
 
 implementation
 
-uses Vcl.forms;
+uses
+  Vcl.forms, Dialogs, System.UITypes;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+procedure TdmMain.cdsItemsCRUDBeforePost(DataSet: TDataSet);
+var
+  field: TField;
+begin
+  if DataSet.State = dsInsert then
+  begin
+    DataSet.FieldByName('created_at').AsDateTime := Now;
+  end;
+  DataSet.FieldByName('description').AsString := Copy(DataSet.FieldByName('keywords').AsWideString, 1, 255);
+  DataSet.FieldByName('updated_at').AsDateTime := Now;
+
+  for field in DataSet.Fields do
+  begin
+    if field.IsNull and field.Required then
+    begin
+      MessageDlg(Format('O campo "%s" é requerido!', [field.DisplayName]), mtError, [mbOK], 0);
+      Abort;
+    end;
+  end;
+end;
 
 procedure TdmMain.DataModuleCreate(Sender: TObject);
 var

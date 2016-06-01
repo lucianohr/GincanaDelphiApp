@@ -13,7 +13,7 @@ object frmPassword: TfrmPassword
   Font.Style = []
   OldCreateOrder = True
   Position = poScreenCenter
-  OnCloseQuery = FormCloseQuery
+  OnClose = FormClose
   PixelsPerInch = 96
   TextHeight = 18
   object Label1: TLabel

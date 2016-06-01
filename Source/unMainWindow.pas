@@ -14,12 +14,17 @@ type
     Label1: TLabel;
     searchFieldSelect: TComboBox;
     searchText: TEdit;
-    Button1: TButton;
+    btnSearch: TButton;
     DBGrid1: TDBGrid;
+    btnClear: TButton;
     procedure btnNewItemClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure DBGrid1TitleClick(Column: TColumn);
+    procedure DBGrid1DblClick(Sender: TObject);
+    procedure btnClearClick(Sender: TObject);
+    procedure btnSearchClick(Sender: TObject);
   private
+    procedure CreateFormItem;
     { Private declarations }
   public
     { Public declarations }
@@ -34,18 +39,63 @@ implementation
 
 uses unMainDM, unItemForm;
 
+procedure TfrmMainWindow.btnClearClick(Sender: TObject);
+begin
+  dmMain.cdsItemsList.Filtered := False;
+  searchText.Clear;
+  searchText.SetFocus;
+end;
+
 procedure TfrmMainWindow.btnNewItemClick(Sender: TObject);
 begin
-  if frmItemForm = nil then
+  CreateFormItem;
+  dmMain.cdsItemsCRUD.Open;
+  dmMain.cdsItemsCRUD.Insert;
+  frmItemForm.Show;
+end;
+
+procedure TfrmMainWindow.btnSearchClick(Sender: TObject);
+begin
+  with dmMain.cdsItemsList do
   begin
-    frmItemForm := TfrmItemForm.Create(Application);
+    try
+      Filtered := False;
+      case searchFieldSelect.ItemIndex of
+        0: Filter := 'UPPER(description) Like ' +UpperCase(QuotedStr('%' + searchText.Text + '%'));
+        1: Filter := Format('box_number = %d', [StrToInt(searchText.Text)]);
+        2: Filter := Format('year = %d', [StrToInt(searchText.Text)]);
+      end;
+      Filtered := True;
+    except
+      MessageDlg('Critério de pesquisa inválido!', mtError, [mbOK], 0);;
+      btnClear.Click;
+    end;
   end;
+end;
+
+procedure TfrmMainWindow.DBGrid1DblClick(Sender: TObject);
+begin
+  CreateFormItem;
+  CreateFormItem;
+  dmMain.cdsItemsCRUD.Close;
+  dmMain.cdsItemsCRUD.FetchParams;
+  dmMain.cdsItemsCRUD.ParamByName('id').AsInteger := dmMain.cdsItemsList.FieldByName('id').AsInteger;
+  dmMain.cdsItemsCRUD.Open;
+  dmMain.cdsItemsCRUD.Edit;
   frmItemForm.Show;
 end;
 
 procedure TfrmMainWindow.DBGrid1TitleClick(Column: TColumn);
 begin
   dmMain.cdsItemsList.IndexFieldNames := Column.FieldName;
+end;
+
+procedure TfrmMainWindow.CreateFormItem;
+begin
+  if frmItemForm = nil then
+  begin
+    frmItemForm := TfrmItemForm.Create(Application);
+  end;
 end;
 
 procedure TfrmMainWindow.FormShow(Sender: TObject);

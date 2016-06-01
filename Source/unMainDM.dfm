@@ -24,7 +24,7 @@ object dmMain: TdmMain
     Left = 328
     Top = 192
     Bitmap = {
-      494C01010B003000340018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B003000480018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -989,8 +989,88 @@ object dmMain: TdmMain
     Top = 240
   end
   object FDGUIxWaitCursor1: TFDGUIxWaitCursor
-    Provider = 'FMX'
+    Provider = 'Forms'
     Left = 276
     Top = 32
+  end
+  object qryItemsCRUD: TFDQuery
+    Connection = dbConnection
+    Transaction = dbTransaction
+    UpdateOptions.KeyFields = 'id'
+    SQL.Strings = (
+      
+        'select id, box_number, year, description, keywords, created_at, ' +
+        'updated_at from items'
+      'where id = :id')
+    Left = 104
+    Top = 84
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+  end
+  object dspItemsCRUD: TDataSetProvider
+    DataSet = qryItemsCRUD
+    Left = 104
+    Top = 136
+  end
+  object cdsItemsCRUD: TClientDataSet
+    Aggregates = <>
+    FilterOptions = [foCaseInsensitive]
+    FetchOnDemand = False
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'ID'
+        ParamType = ptInput
+      end>
+    ProviderName = 'dspItemsCRUD'
+    BeforePost = cdsItemsCRUDBeforePost
+    Left = 104
+    Top = 188
+    object cdsItemsCRUDid: TAutoIncField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object cdsItemsCRUDbox_number: TIntegerField
+      DisplayLabel = 'Caixa'
+      FieldName = 'box_number'
+      Required = True
+    end
+    object cdsItemsCRUDyear: TIntegerField
+      DisplayLabel = 'Ano'
+      FieldName = 'year'
+      Required = True
+    end
+    object cdsItemsCRUDdescription: TStringField
+      DisplayLabel = 'Palavras-chave'
+      FieldName = 'description'
+      Size = 255
+    end
+    object cdsItemsCRUDkeywords: TMemoField
+      DisplayLabel = 'Palavras-chave'
+      FieldName = 'keywords'
+      Required = True
+      BlobType = ftMemo
+    end
+    object cdsItemsCRUDcreated_at: TDateTimeField
+      DisplayLabel = 'Cadastrado em'
+      FieldName = 'created_at'
+      Required = True
+    end
+    object cdsItemsCRUDupdated_at: TDateTimeField
+      DisplayLabel = 'Atualizado em'
+      FieldName = 'updated_at'
+      Required = True
+    end
+  end
+  object dsItemsCRUD: TDataSource
+    DataSet = cdsItemsCRUD
+    Left = 104
+    Top = 240
   end
 end

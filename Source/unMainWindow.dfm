@@ -4,7 +4,7 @@ object frmMainWindow: TfrmMainWindow
   ActiveControl = searchFieldSelect
   Caption = 'Gingana - Cadastro de Objetos'
   ClientHeight = 662
-  ClientWidth = 984
+  ClientWidth = 1084
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,13 +19,14 @@ object frmMainWindow: TfrmMainWindow
   object pnlActions: TPanel
     Left = 0
     Top = 0
-    Width = 984
+    Width = 1084
     Height = 53
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 984
     DesignSize = (
-      984
+      1084
       53)
     object Label1: TLabel
       Left = 16
@@ -35,7 +36,7 @@ object frmMainWindow: TfrmMainWindow
       Caption = 'Pesquisar por'
     end
     object btnNewItem: TButton
-      Left = 896
+      Left = 996
       Top = 13
       Width = 81
       Height = 33
@@ -43,8 +44,9 @@ object frmMainWindow: TfrmMainWindow
       Caption = 'Novo'
       ImageIndex = 2
       Images = dmMain.ImageList1
-      TabOrder = 0
+      TabOrder = 4
       OnClick = btnNewItemClick
+      ExplicitLeft = 896
     end
     object searchFieldSelect: TComboBox
       Left = 116
@@ -53,7 +55,7 @@ object frmMainWindow: TfrmMainWindow
       Height = 26
       Style = csDropDownList
       ItemIndex = 0
-      TabOrder = 1
+      TabOrder = 0
       Text = 'Palavra-chave'
       Items.Strings = (
         'Palavra-chave'
@@ -65,10 +67,10 @@ object frmMainWindow: TfrmMainWindow
       Top = 16
       Width = 505
       Height = 26
-      TabOrder = 2
+      TabOrder = 1
       TextHint = 'o que deseja pesquisar'
     end
-    object Button1: TButton
+    object btnSearch: TButton
       Left = 763
       Top = 13
       Width = 81
@@ -77,14 +79,27 @@ object frmMainWindow: TfrmMainWindow
       Default = True
       ImageIndex = 6
       Images = dmMain.ImageList1
+      TabOrder = 2
+      OnClick = btnSearchClick
+    end
+    object btnClear: TButton
+      Left = 850
+      Top = 13
+      Width = 81
+      Height = 33
+      Cancel = True
+      Caption = '&Limpar'
+      ImageIndex = 1
+      Images = dmMain.ImageList1
       TabOrder = 3
+      OnClick = btnClearClick
     end
   end
   object DBGrid1: TDBGrid
     AlignWithMargins = True
     Left = 3
     Top = 56
-    Width = 978
+    Width = 1078
     Height = 603
     Align = alClient
     BorderStyle = bsNone
@@ -101,6 +116,7 @@ object frmMainWindow: TfrmMainWindow
     TitleFont.Height = -15
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = [fsBold]
+    OnDblClick = DBGrid1DblClick
     OnTitleClick = DBGrid1TitleClick
     Columns = <
       item
@@ -111,26 +127,31 @@ object frmMainWindow: TfrmMainWindow
       item
         Expanded = False
         FieldName = 'box_number'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'year'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'description'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'created_at'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'updated_at'
+        Width = 64
         Visible = True
       end>
   end
