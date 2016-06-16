@@ -4,7 +4,7 @@ object frmMainWindow: TfrmMainWindow
   ActiveControl = searchFieldSelect
   Caption = 'Gingana - Cadastro de Objetos'
   ClientHeight = 662
-  ClientWidth = 1084
+  ClientWidth = 984
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -19,14 +19,14 @@ object frmMainWindow: TfrmMainWindow
   object pnlActions: TPanel
     Left = 0
     Top = 0
-    Width = 1084
+    Width = 984
     Height = 53
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 984
+    ExplicitWidth = 1084
     DesignSize = (
-      1084
+      984
       53)
     object Label1: TLabel
       Left = 16
@@ -36,8 +36,8 @@ object frmMainWindow: TfrmMainWindow
       Caption = 'Pesquisar por'
     end
     object btnNewItem: TButton
-      Left = 996
-      Top = 13
+      Left = 896
+      Top = 11
       Width = 81
       Height = 33
       Anchors = [akTop, akRight]
@@ -46,7 +46,6 @@ object frmMainWindow: TfrmMainWindow
       Images = dmMain.ImageList1
       TabOrder = 4
       OnClick = btnNewItemClick
-      ExplicitLeft = 896
     end
     object searchFieldSelect: TComboBox
       Left = 116
@@ -65,14 +64,14 @@ object frmMainWindow: TfrmMainWindow
     object searchText: TEdit
       Left = 252
       Top = 16
-      Width = 505
+      Width = 473
       Height = 26
       TabOrder = 1
       TextHint = 'o que deseja pesquisar'
     end
     object btnSearch: TButton
-      Left = 763
-      Top = 13
+      Left = 731
+      Top = 11
       Width = 81
       Height = 33
       Caption = '&Buscar'
@@ -83,8 +82,8 @@ object frmMainWindow: TfrmMainWindow
       OnClick = btnSearchClick
     end
     object btnClear: TButton
-      Left = 850
-      Top = 13
+      Left = 814
+      Top = 11
       Width = 81
       Height = 33
       Cancel = True
@@ -99,7 +98,7 @@ object frmMainWindow: TfrmMainWindow
     AlignWithMargins = True
     Left = 3
     Top = 56
-    Width = 1078
+    Width = 978
     Height = 603
     Align = alClient
     BorderStyle = bsNone
@@ -120,17 +119,20 @@ object frmMainWindow: TfrmMainWindow
     OnTitleClick = DBGrid1TitleClick
     Columns = <
       item
+        Alignment = taLeftJustify
         Expanded = False
         FieldName = 'id'
         Visible = True
       end
       item
+        Alignment = taLeftJustify
         Expanded = False
         FieldName = 'box_number'
         Width = 64
         Visible = True
       end
       item
+        Alignment = taLeftJustify
         Expanded = False
         FieldName = 'year'
         Width = 64

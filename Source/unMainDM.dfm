@@ -24,7 +24,7 @@ object dmMain: TdmMain
     Left = 328
     Top = 192
     Bitmap = {
-      494C01010B003000480018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B0030004C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1072,5 +1072,52 @@ object dmMain: TdmMain
     DataSet = cdsItemsCRUD
     Left = 104
     Top = 240
+  end
+  object qryUsers: TFDQuery
+    Connection = dbConnection
+    Transaction = dbTransaction
+    SQL.Strings = (
+      'select id, username, password from users'
+      'where username = :user')
+    Left = 188
+    Top = 84
+    ParamData = <
+      item
+        Name = 'USER'
+        DataType = ftString
+        ParamType = ptInput
+        Value = 'admin'
+      end>
+  end
+  object dspUsers: TDataSetProvider
+    DataSet = qryUsers
+    Left = 188
+    Top = 136
+  end
+  object cdsUsers: TClientDataSet
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftString
+        Name = 'USER'
+        ParamType = ptInput
+        Value = 'admin'
+      end>
+    ProviderName = 'dspUsers'
+    Left = 188
+    Top = 188
+    object cdsUsersid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object cdsUsersusername: TStringField
+      FieldName = 'username'
+      Required = True
+    end
+    object cdsUserspassword: TStringField
+      FieldName = 'password'
+      Required = True
+      Size = 255
+    end
   end
 end

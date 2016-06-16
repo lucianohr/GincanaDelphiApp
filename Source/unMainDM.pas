@@ -37,12 +37,22 @@ type
     cdsItemsCRUDkeywords: TMemoField;
     cdsItemsCRUDcreated_at: TDateTimeField;
     cdsItemsCRUDupdated_at: TDateTimeField;
+    qryUsers: TFDQuery;
+    dspUsers: TDataSetProvider;
+    cdsUsers: TClientDataSet;
+    cdsUsersid: TAutoIncField;
+    cdsUsersusername: TStringField;
+    cdsUserspassword: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cdsItemsCRUDBeforePost(DataSet: TDataSet);
   private
     { Private declarations }
   public
     { Public declarations }
+    function HashMD5(source: string): string;
+    function HasAdminUser: boolean;
+    procedure CreateFirstUser(newPass: string);
+    function VerifyPassword(pass: string): boolean;
   end;
 
 var
@@ -51,7 +61,7 @@ var
 implementation
 
 uses
-  Vcl.forms, Dialogs, System.UITypes;
+  Vcl.forms, Dialogs, System.UITypes, IdGlobal, IdHash, IdHashMessageDigest;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -78,6 +88,23 @@ begin
   end;
 end;
 
+procedure TdmMain.CreateFirstUser(newPass: string);
+begin
+  with cdsUsers do
+  begin
+    Close;
+    Open;
+    if RecordCount = 0 then
+    begin
+      Insert;
+      FindField('username').AsString := 'admin';
+      FindField('password').AsString := HashMD5(newPass);
+      Post;
+      ApplyUpdates(0);
+    end;
+  end;
+end;
+
 procedure TdmMain.DataModuleCreate(Sender: TObject);
 var
   dbFile: string;
@@ -89,6 +116,38 @@ begin
   begin
     dbConnection.Params.Database := dbFile;
     dbConnection.Connected := true;
+  end;
+end;
+
+function TdmMain.HashMD5(source: string): string;
+var
+  md5: TIdHashMessageDigest5;
+begin
+  md5 := TIdHashMessageDigest5.Create;
+  try
+    Result := md5.HashStringAsHex(source);
+  finally
+    FreeAndNil(md5);
+  end;
+end;
+
+function TdmMain.VerifyPassword(pass: string): boolean;
+begin
+  with cdsUsers do
+  begin
+    Close;
+    Open;
+    result := (RecordCount = 1) and (FindField('password').AsString = HashMD5(pass));
+  end;
+end;
+
+function TdmMain.HasAdminUser: boolean;
+begin
+  with cdsUsers do
+  begin
+    Close;
+    Open;
+    result := RecordCount = 1;
   end;
 end;
 
