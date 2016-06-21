@@ -24,7 +24,7 @@ type
     Label5: TLabel;
     DBEdit3: TDBEdit;
     btnDelete: TButton;
-    OpenPictureDialog1: TOpenPictureDialog;
+    LoadImage: TOpenPictureDialog;
     btnLoadImage: TButton;
     Image1: TImage;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -35,6 +35,7 @@ type
     procedure btnLoadImageClick(Sender: TObject);
   private
     procedure RefreshAndClose;
+    procedure SaveImage(objCode: integer);
     { Private declarations }
   public
     { Public declarations }
@@ -63,8 +64,16 @@ begin
 end;
 
 procedure TfrmItemForm.FormShow(Sender: TObject);
+var
+  TmpName: string;
 begin
   btnDelete.Enabled := dmMain.cdsItemsCRUD.State in [dsEdit, dsBrowse];
+  if dmMain.cdsItemsCRUDid.AsInteger <> 0 then
+  begin
+    TmpName := dmMain.FindObjectImage(dmMain.cdsItemsCRUDid.AsInteger);
+    if TmpName <> '' then
+      Image1.Picture.LoadFromFile(TmpName);
+  end;
 end;
 
 procedure TfrmItemForm.btnDeleteClick(Sender: TObject);
@@ -81,42 +90,40 @@ procedure TfrmItemForm.btnSaveClick(Sender: TObject);
 begin
   dmMain.cdsItemsCRUD.Post;
   if dmMain.cdsItemsCRUD.ApplyUpdates(0) = 0 then
-    RefreshAndClose
+  begin
+    if (dmMain.FObjectID <> 0) then
+      SaveImage(dmMain.FObjectID)
+    else
+      SaveImage(dmMain.cdsItemsCRUDid.AsInteger);
+    RefreshAndClose;
+  end;
 end;
 
 procedure TfrmItemForm.btnLoadImageClick(Sender: TObject);
-//var
-//  ms: TMemoryStream;
 begin
-//  if OpenPictureDialog1.Execute then
-//  begin
-//    Image1.Picture.LoadFromFile(OpenPictureDialog1.FileName);
-//    ms := TMemoryStream.Create;
-//    ms.position:=0;
-//    Image1.Picture.Graphic.SaveToStream(ms);
-//    ms.position:=0;
-//    with dmMain.cdsItemsCRUDimage as TBlobField do
-//      LoadFromStream(ms);
-//    FreeAndNil(ms);
-//  end;
-
-//  if OpenPictureDialog1.Execute then
-//  try
-//    if OpenPictureDialog1.FileName <> '' then
-//      dmMain.cdsItemsCRUDimage.LoadFromFile(OpenPictureDialog1.FileName)
-//    else
-//      dmMain.cdsItemsCRUDimage.Clear;
-//  except
-//    dmMain.cdsItemsCRUDimage.Clear;
-//    Application.MessageBox('Não foi possível carregar a imagem!','ATENÇÃO',MB_OK+MB_ICONERROR);
-//  end;
+  if LoadImage.Execute then
+  begin
+    Image1.Picture.LoadFromFile(LoadImage.FileName);
+  end;
 end;
+
 
 procedure TfrmItemForm.RefreshAndClose;
 begin
   dmMain.cdsItemsCRUD.Close;
   dmMain.cdsItemsList.Refresh;
   Self.Close;
+end;
+
+procedure TfrmItemForm.SaveImage(objCode: integer);
+begin
+  if (LoadImage.FileName <> '') and (Image1.Picture <> nil)
+    and (LoadImage.FileName <> dmMain.FindObjectImage(objCode)) then
+  begin
+    if FileExists(dmMain.FindObjectImage(objCode)) then
+      DeleteFile(dmMain.FindObjectImage(objCode));
+    Image1.Picture.SaveToFile(dmMain.ImagesPath + dmMain.ObjectImageName(objCode, ExtractFileExt(LoadImage.FileName)));
+  end;
 end;
 
 end.

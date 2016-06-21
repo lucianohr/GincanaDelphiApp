@@ -24,7 +24,7 @@ object dmMain: TdmMain
     Left = 328
     Top = 192
     Bitmap = {
-      494C01010B0030004C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B003000500018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1014,6 +1014,8 @@ object dmMain: TdmMain
   end
   object dspItemsCRUD: TDataSetProvider
     DataSet = qryItemsCRUD
+    Options = [poPropogateChanges, poUseQuoteChar]
+    AfterUpdateRecord = dspItemsCRUDAfterUpdateRecord
     Left = 104
     Top = 136
   end
@@ -1029,12 +1031,13 @@ object dmMain: TdmMain
       end>
     ProviderName = 'dspItemsCRUD'
     BeforePost = cdsItemsCRUDBeforePost
+    OnNewRecord = cdsItemsCRUDNewRecord
     Left = 104
     Top = 188
     object cdsItemsCRUDid: TAutoIncField
       DisplayLabel = 'C'#243'digo'
       FieldName = 'id'
-      ReadOnly = True
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
     end
     object cdsItemsCRUDbox_number: TIntegerField
       DisplayLabel = 'Caixa'

@@ -4,7 +4,7 @@ object frmItemForm: TfrmItemForm
   ActiveControl = DBEdit1
   BorderStyle = bsDialog
   Caption = 'Incluir / Modificar Objeto'
-  ClientHeight = 237
+  ClientHeight = 407
   ClientWidth = 750
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object frmItemForm: TfrmItemForm
   OnShow = FormShow
   DesignSize = (
     750
-    237)
+    407)
   PixelsPerInch = 96
   TextHeight = 18
   object Label1: TLabel
@@ -56,7 +56,6 @@ object frmItemForm: TfrmItemForm
     Width = 56
     Height = 18
     Caption = 'Imagem'
-    Visible = False
   end
   object Image1: TImage
     Left = 116
@@ -64,11 +63,10 @@ object frmItemForm: TfrmItemForm
     Width = 207
     Height = 207
     Proportional = True
-    Visible = False
   end
   object btnSave: TButton
     Left = 457
-    Top = 198
+    Top = 368
     Width = 91
     Height = 31
     Anchors = [akRight, akBottom]
@@ -79,11 +77,10 @@ object frmItemForm: TfrmItemForm
     ModalResult = 1
     TabOrder = 4
     OnClick = btnSaveClick
-    ExplicitTop = 368
   end
   object btnCancel: TButton
     Left = 651
-    Top = 198
+    Top = 368
     Width = 91
     Height = 31
     Anchors = [akRight, akBottom]
@@ -94,7 +91,6 @@ object frmItemForm: TfrmItemForm
     ModalResult = 2
     TabOrder = 6
     OnClick = btnCancelClick
-    ExplicitTop = 368
   end
   object DBEdit1: TDBEdit
     Left = 116
@@ -137,7 +133,7 @@ object frmItemForm: TfrmItemForm
   end
   object btnDelete: TButton
     Left = 554
-    Top = 198
+    Top = 368
     Width = 91
     Height = 31
     Anchors = [akRight, akBottom]
@@ -146,11 +142,10 @@ object frmItemForm: TfrmItemForm
     Images = dmMain.ImageList1
     TabOrder = 5
     OnClick = btnDeleteClick
-    ExplicitTop = 368
   end
   object btnLoadImage: TButton
     Left = 77
-    Top = 46
+    Top = 216
     Width = 33
     Height = 31
     Hint = 'Adicionar imagem'
@@ -158,11 +153,9 @@ object frmItemForm: TfrmItemForm
     ImageIndex = 7
     Images = dmMain.ImageList1
     TabOrder = 7
-    Visible = False
     OnClick = btnLoadImageClick
-    ExplicitTop = 216
   end
-  object OpenPictureDialog1: TOpenPictureDialog
+  object LoadImage: TOpenPictureDialog
     Filter = 
       'Todos (*.gif;*.png;*.jpg;*.jpeg)|*.gif;*.png;*.jpg;*.jpeg|GIF Im' +
       'age (*.gif)|*.gif|Portable Network Graphics (*.png)|*.png|JPEG I' +

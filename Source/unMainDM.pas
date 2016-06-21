@@ -45,14 +45,21 @@ type
     cdsUserspassword: TStringField;
     procedure DataModuleCreate(Sender: TObject);
     procedure cdsItemsCRUDBeforePost(DataSet: TDataSet);
+    procedure dspItemsCRUDAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
+      DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+    procedure cdsItemsCRUDNewRecord(DataSet: TDataSet);
   private
     { Private declarations }
   public
     { Public declarations }
+    FObjectID: integer;
     function HashMD5(source: string): string;
     function HasAdminUser: boolean;
     procedure CreateFirstUser(newPass: string);
     function VerifyPassword(pass: string): boolean;
+    function ImagesPath: string;
+    function ObjectImageName(id: integer; ext: string): string;
+    function FindObjectImage(id: integer): TFileName;
   end;
 
 var
@@ -88,6 +95,11 @@ begin
   end;
 end;
 
+procedure TdmMain.cdsItemsCRUDNewRecord(DataSet: TDataSet);
+begin
+  FObjectID := 0;
+end;
+
 procedure TdmMain.CreateFirstUser(newPass: string);
 begin
   with cdsUsers do
@@ -119,6 +131,26 @@ begin
   end;
 end;
 
+procedure TdmMain.dspItemsCRUDAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
+  DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
+begin
+  // id do novo Objeto inserido. Nome da imagem
+  if (UpdateKind = ukInsert) then
+    FObjectID := SourceDS.FieldByName('id').Value;
+end;
+
+function TdmMain.FindObjectImage(id: integer): TFileName;
+var
+  SRec: TSearchRec;
+  TmpName: string;
+begin
+  TmpName := format('%.7d', [id]);
+  if FindFirst(ImagesPath + TmpName + '.*', faAnyfile, SRec ) = 0 then
+    result := ImagesPath + SRec.Name
+  else
+    result := '';
+end;
+
 function TdmMain.HashMD5(source: string): string;
 var
   md5: TIdHashMessageDigest5;
@@ -129,6 +161,17 @@ begin
   finally
     FreeAndNil(md5);
   end;
+end;
+
+function TdmMain.ImagesPath: string;
+begin
+  ForceDirectories(ExtractFilePath(Application.ExeName) + 'Images');
+  result := ExtractFilePath(Application.ExeName) + 'Images\';
+end;
+
+function TdmMain.ObjectImageName(id: integer; ext: string): string;
+begin
+  result := format('%.7d%s', [id, ext]);
 end;
 
 function TdmMain.VerifyPassword(pass: string): boolean;
