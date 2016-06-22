@@ -46,10 +46,10 @@ begin
       Action := caNone;
       Abort;
     end;
-    dmMain.CreateFirstUser(edtConfirmPassword.Text);
+    dmMain.CreateAdminUser(edtConfirmPassword.Text);
     frmMainWindow.FormShow(Sender);
   end
-  else
+  else if Self.Owner.name = '' then
     Application.Terminate;
 end;
 

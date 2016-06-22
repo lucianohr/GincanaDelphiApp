@@ -50,12 +50,13 @@ type
     procedure cdsItemsCRUDNewRecord(DataSet: TDataSet);
   private
     { Private declarations }
+    procedure DeleteAdminUser;
   public
     { Public declarations }
     FObjectID: integer;
     function HashMD5(source: string): string;
     function HasAdminUser: boolean;
-    procedure CreateFirstUser(newPass: string);
+    procedure CreateAdminUser(newPass: string);
     function VerifyPassword(pass: string): boolean;
     function ImagesPath: string;
     function ObjectImageName(id: integer; ext: string): string;
@@ -100,8 +101,9 @@ begin
   FObjectID := 0;
 end;
 
-procedure TdmMain.CreateFirstUser(newPass: string);
+procedure TdmMain.CreateAdminUser(newPass: string);
 begin
+  DeleteAdminUser;
   with cdsUsers do
   begin
     Close;
@@ -112,6 +114,20 @@ begin
       FindField('username').AsString := 'admin';
       FindField('password').AsString := HashMD5(newPass);
       Post;
+      ApplyUpdates(0);
+    end;
+  end;
+end;
+
+procedure TdmMain.DeleteAdminUser;
+begin
+  with cdsUsers do
+  begin
+    Close;
+    Open;
+    if RecordCount = 1 then
+    begin
+      Delete;
       ApplyUpdates(0);
     end;
   end;

@@ -10,7 +10,8 @@ uses
   Vcl.Themes,
   Vcl.Styles,
   Windows,
-  unNewPassword in 'Source\unNewPassword.pas' {frmNewPassword};
+  unNewPassword in 'Source\unNewPassword.pas' {frmNewPassword},
+  unImageZoom in 'Source\unImageZoom.pas' {frmImageZoom};
 
 {$R *.res}
 

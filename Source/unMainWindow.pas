@@ -17,12 +17,14 @@ type
     btnSearch: TButton;
     DBGrid1: TDBGrid;
     btnClear: TButton;
+    btnChangePass: TButton;
     procedure btnNewItemClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure DBGrid1TitleClick(Column: TColumn);
     procedure DBGrid1DblClick(Sender: TObject);
     procedure btnClearClick(Sender: TObject);
     procedure btnSearchClick(Sender: TObject);
+    procedure btnChangePassClick(Sender: TObject);
   private
     procedure CreateFormItem;
     { Private declarations }
@@ -37,7 +39,16 @@ implementation
 
 {$R *.dfm}
 
-uses unMainDM, unItemForm;
+uses unMainDM, unItemForm, unNewPassword;
+
+procedure TfrmMainWindow.btnChangePassClick(Sender: TObject);
+begin
+  if Application.MessageBox('Tem certeza que deseja alterar a senha de acesso?', PWideChar(Application.Title), MB_YESNO or MB_ICONQUESTION) = IDYES then
+  begin
+    frmNewPassword := TfrmNewPassword.Create(Self);
+    frmNewPassword.ShowModal;
+  end;
+end;
 
 procedure TfrmMainWindow.btnClearClick(Sender: TObject);
 begin
@@ -75,7 +86,6 @@ end;
 
 procedure TfrmMainWindow.DBGrid1DblClick(Sender: TObject);
 begin
-  CreateFormItem;
   CreateFormItem;
   dmMain.cdsItemsCRUD.Close;
   dmMain.cdsItemsCRUD.FetchParams;

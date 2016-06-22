@@ -62,7 +62,9 @@ object frmItemForm: TfrmItemForm
     Top = 192
     Width = 207
     Height = 207
+    Hint = 'Duplo clique para ampliar imagem'
     Proportional = True
+    OnDblClick = Image1DblClick
   end
   object btnSave: TButton
     Left = 457
@@ -75,7 +77,7 @@ object frmItemForm: TfrmItemForm
     ImageIndex = 0
     Images = dmMain.ImageList1
     ModalResult = 1
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnSaveClick
   end
   object btnCancel: TButton
@@ -89,7 +91,7 @@ object frmItemForm: TfrmItemForm
     ImageIndex = 1
     Images = dmMain.ImageList1
     ModalResult = 2
-    TabOrder = 6
+    TabOrder = 7
     OnClick = btnCancelClick
   end
   object DBEdit1: TDBEdit
@@ -140,7 +142,7 @@ object frmItemForm: TfrmItemForm
     Caption = 'Excluir'
     ImageIndex = 4
     Images = dmMain.ImageList1
-    TabOrder = 5
+    TabOrder = 6
     OnClick = btnDeleteClick
   end
   object btnLoadImage: TButton
@@ -152,7 +154,7 @@ object frmItemForm: TfrmItemForm
     Anchors = [akRight, akBottom]
     ImageIndex = 7
     Images = dmMain.ImageList1
-    TabOrder = 7
+    TabOrder = 4
     OnClick = btnLoadImageClick
   end
   object LoadImage: TOpenPictureDialog

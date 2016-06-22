@@ -33,6 +33,7 @@ type
     procedure btnDeleteClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnLoadImageClick(Sender: TObject);
+    procedure Image1DblClick(Sender: TObject);
   private
     procedure RefreshAndClose;
     procedure SaveImage(objCode: integer);
@@ -49,7 +50,7 @@ implementation
 {$R *.dfm}
 
 uses
-  unMainDM, Data.DB, Jpeg;
+  unMainDM, Data.DB, Jpeg, unImageZoom;
 
 procedure TfrmItemForm.btnCancelClick(Sender: TObject);
 begin
@@ -73,6 +74,16 @@ begin
     TmpName := dmMain.FindObjectImage(dmMain.cdsItemsCRUDid.AsInteger);
     if TmpName <> '' then
       Image1.Picture.LoadFromFile(TmpName);
+  end;
+end;
+
+procedure TfrmItemForm.Image1DblClick(Sender: TObject);
+begin
+  if (frmImageZoom = nil) and (Image1.Picture <> nil) then
+  begin
+    frmImageZoom := TfrmImageZoom.Create(Application);
+    frmImageZoom.Image1.Picture := Image1.Picture;
+    frmImageZoom.Show;
   end;
 end;
 
