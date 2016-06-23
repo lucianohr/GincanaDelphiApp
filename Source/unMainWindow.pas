@@ -72,7 +72,7 @@ begin
     try
       Filtered := False;
       case searchFieldSelect.ItemIndex of
-        0: Filter := 'UPPER(description) Like ' +UpperCase(QuotedStr('%' + searchText.Text + '%'));
+        0: Filter := 'UPPER(description) Like ''%' + AnsiUpperCase(searchText.Text) + '%''';
         1: Filter := Format('box_number = %d', [StrToInt(searchText.Text)]);
         2: Filter := Format('year = %d', [StrToInt(searchText.Text)]);
       end;
