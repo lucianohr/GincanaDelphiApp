@@ -4,7 +4,7 @@ object frmItemForm: TfrmItemForm
   ActiveControl = DBEdit1
   BorderStyle = bsDialog
   Caption = 'Incluir / Modificar Objeto'
-  ClientHeight = 407
+  ClientHeight = 451
   ClientWidth = 750
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -19,7 +19,7 @@ object frmItemForm: TfrmItemForm
   OnShow = FormShow
   DesignSize = (
     750
-    407)
+    451)
   PixelsPerInch = 96
   TextHeight = 18
   object Label1: TLabel
@@ -50,25 +50,77 @@ object frmItemForm: TfrmItemForm
     Height = 18
     Caption = 'Palavras-chave'
   end
-  object Label5: TLabel
-    Left = 54
+  object PnlLoadedImages: TPanel
+    Left = 4
     Top = 192
-    Width = 56
-    Height = 18
-    Caption = 'Imagem'
+    Width = 369
+    Height = 213
+    BevelOuter = bvNone
+    TabOrder = 9
+    object Label5: TLabel
+      Left = 44
+      Top = 0
+      Width = 58
+      Height = 36
+      Alignment = taRightJustify
+      Caption = 'Imagens salvas'
+      WordWrap = True
+    end
+    object Label6: TLabel
+      Left = -1
+      Top = 162
+      Width = 103
+      Height = 42
+      Alignment = taRightJustify
+      Caption = '(clique no item ao lado para visualizar a imagem)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+      WordWrap = True
+    end
+    object ImagesList: TListBox
+      Left = 112
+      Top = 0
+      Width = 245
+      Height = 207
+      ItemHeight = 18
+      TabOrder = 0
+      OnClick = ImagesListClick
+    end
   end
-  object Image1: TImage
-    Left = 116
+  object PnlPreviewImage: TPanel
+    Left = 420
     Top = 192
-    Width = 207
-    Height = 207
-    Hint = 'Duplo clique para ampliar imagem'
-    Proportional = True
-    OnDblClick = Image1DblClick
+    Width = 322
+    Height = 213
+    BevelOuter = bvNone
+    TabOrder = 8
+    object Image1: TImage
+      Left = 112
+      Top = 0
+      Width = 207
+      Height = 207
+      Hint = 'Duplo clique para ampliar imagem'
+      Center = True
+      Proportional = True
+      OnDblClick = Image1DblClick
+    end
+    object Label7: TLabel
+      Left = 30
+      Top = 0
+      Width = 76
+      Height = 18
+      Alignment = taRightJustify
+      Caption = 'Visualiza'#231#227'o'
+      WordWrap = True
+    end
   end
   object btnSave: TButton
     Left = 457
-    Top = 368
+    Top = 412
     Width = 91
     Height = 31
     Anchors = [akRight, akBottom]
@@ -82,7 +134,7 @@ object frmItemForm: TfrmItemForm
   end
   object btnCancel: TButton
     Left = 651
-    Top = 368
+    Top = 412
     Width = 91
     Height = 31
     Anchors = [akRight, akBottom]
@@ -135,7 +187,7 @@ object frmItemForm: TfrmItemForm
   end
   object btnDelete: TButton
     Left = 554
-    Top = 368
+    Top = 412
     Width = 91
     Height = 31
     Anchors = [akRight, akBottom]
@@ -146,8 +198,8 @@ object frmItemForm: TfrmItemForm
     OnClick = btnDeleteClick
   end
   object btnLoadImage: TButton
-    Left = 77
-    Top = 216
+    Left = 73
+    Top = 234
     Width = 33
     Height = 31
     Hint = 'Adicionar imagem'
@@ -157,14 +209,54 @@ object frmItemForm: TfrmItemForm
     TabOrder = 4
     OnClick = btnLoadImageClick
   end
+  object PnlNewImages: TPanel
+    Left = 0
+    Top = 264
+    Width = 742
+    Height = 113
+    BevelOuter = bvNone
+    TabOrder = 10
+    Visible = False
+    object Label8: TLabel
+      Left = 48
+      Top = 4
+      Width = 58
+      Height = 36
+      Alignment = taRightJustify
+      Caption = 'Novas Imagens'
+      WordWrap = True
+    end
+    object Label9: TLabel
+      Left = 116
+      Top = 96
+      Width = 158
+      Height = 14
+      Caption = '(ser'#227'o processadas ao salvar)'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
+    object NewImagesList: TListBox
+      Left = 116
+      Top = 0
+      Width = 623
+      Height = 93
+      ItemHeight = 18
+      TabOrder = 0
+      OnClick = ImagesListClick
+    end
+  end
   object LoadImage: TOpenPictureDialog
     Filter = 
-      'Todos (*.gif;*.png;*.jpg;*.jpeg)|*.gif;*.png;*.jpg;*.jpeg|GIF Im' +
-      'age (*.gif)|*.gif|Portable Network Graphics (*.png)|*.png|JPEG I' +
-      'mage File (*.jpg)|*.jpg|JPEG Image File (*.jpeg)|*.jpeg'
-    Options = [ofHideReadOnly, ofNoChangeDir, ofPathMustExist, ofFileMustExist, ofEnableSizing]
+      'Todos (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|Portable Network G' +
+      'raphics (*.png)|*.png|JPEG Image File (*.jpg)|*.jpg|JPEG Image F' +
+      'ile (*.jpeg)|*.jpeg'
+    Options = [ofHideReadOnly, ofNoChangeDir, ofAllowMultiSelect, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     Title = 'Selecionar Imagem'
-    Left = 620
-    Top = 36
+    Left = 12
+    Top = 136
   end
 end

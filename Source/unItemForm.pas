@@ -27,6 +27,15 @@ type
     LoadImage: TOpenPictureDialog;
     btnLoadImage: TButton;
     Image1: TImage;
+    ImagesList: TListBox;
+    PnlPreviewImage: TPanel;
+    Label6: TLabel;
+    Label7: TLabel;
+    PnlLoadedImages: TPanel;
+    PnlNewImages: TPanel;
+    Label8: TLabel;
+    NewImagesList: TListBox;
+    Label9: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSaveClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
@@ -34,9 +43,11 @@ type
     procedure FormShow(Sender: TObject);
     procedure btnLoadImageClick(Sender: TObject);
     procedure Image1DblClick(Sender: TObject);
+    procedure ImagesListClick(Sender: TObject);
   private
     procedure RefreshAndClose;
-    procedure SaveImage(objCode: integer);
+    procedure SaveImages(objCode: integer);
+    procedure LoadImages(id: integer);
     { Private declarations }
   public
     { Public declarations }
@@ -50,12 +61,11 @@ implementation
 {$R *.dfm}
 
 uses
-  unMainDM, Data.DB, Jpeg, unImageZoom;
+  unMainDM, Data.DB, Jpeg, unImageZoom, System.IOUtils;
 
 procedure TfrmItemForm.btnCancelClick(Sender: TObject);
 begin
-  dmMain.cdsItemsCRUD.Cancel;
-  dmMain.cdsItemsCRUD.CancelUpdates;
+  dmMain.qryItemsCRUD.Cancel;
   Self.Close;
 end;
 
@@ -65,16 +75,9 @@ begin
 end;
 
 procedure TfrmItemForm.FormShow(Sender: TObject);
-var
-  TmpName: string;
 begin
-  btnDelete.Enabled := dmMain.cdsItemsCRUD.State in [dsEdit, dsBrowse];
-  if dmMain.cdsItemsCRUDid.AsInteger <> 0 then
-  begin
-    TmpName := dmMain.FindObjectImage(dmMain.cdsItemsCRUDid.AsInteger);
-    if TmpName <> '' then
-      Image1.Picture.LoadFromFile(TmpName);
-  end;
+  btnDelete.Enabled := dmMain.qryItemsCRUD.State in [dsEdit, dsBrowse];
+  LoadImages(dmMain.qryItemsCRUDid.AsInteger);
 end;
 
 procedure TfrmItemForm.Image1DblClick(Sender: TObject);
@@ -87,53 +90,78 @@ begin
   end;
 end;
 
+procedure TfrmItemForm.ImagesListClick(Sender: TObject);
+begin
+  if (ImagesList.Items.Count <> 0) then
+    Image1.Picture.LoadFromFile(dmMain.ItemImagesPath(dmMain.qryItemsCRUDid.AsInteger) + ImagesList.Items[ImagesList.ItemIndex]);
+end;
+
+procedure TfrmItemForm.LoadImages(id: integer);
+begin
+  if id <> 0 then
+  begin
+    ImagesList.Items := dmMain.FindItemImages(id);
+    ImagesList.ItemIndex := 0;
+    ImagesListClick(self);
+  end;
+end;
+
 procedure TfrmItemForm.btnDeleteClick(Sender: TObject);
+var
+  objCode: integer;
 begin
   if Application.MessageBox('Deseja excluir o objeto?', PWideChar(Application.Title), MB_YESNO or MB_ICONQUESTION) = IDYES then
   begin
-    dmMain.cdsItemsCRUD.Delete;
-    if dmMain.cdsItemsCRUD.ApplyUpdates(0) = 0 then
-      RefreshAndClose;
+    objCode := dmMain.qryItemsCRUDid.AsInteger;
+    dmMain.qryItemsCRUD.Delete;
+    TDirectory.Delete(dmMain.ItemImagesPath(objCode), true);
+    RefreshAndClose;
   end;
 end;
 
 procedure TfrmItemForm.btnSaveClick(Sender: TObject);
 begin
-  dmMain.cdsItemsCRUD.Post;
-  if dmMain.cdsItemsCRUD.ApplyUpdates(0) = 0 then
-  begin
-    if (dmMain.FObjectID <> 0) then
-      SaveImage(dmMain.FObjectID)
-    else
-      SaveImage(dmMain.cdsItemsCRUDid.AsInteger);
-    RefreshAndClose;
-  end;
+  dmMain.qryItemsCRUD.Post;
+  SaveImages(dmMain.qryItemsCRUDid.AsInteger);
+  RefreshAndClose;
 end;
 
 procedure TfrmItemForm.btnLoadImageClick(Sender: TObject);
 begin
   if LoadImage.Execute then
   begin
-    Image1.Picture.LoadFromFile(LoadImage.FileName);
+    try
+      PnlLoadedImages.Visible := False;
+      PnlPreviewImage.Visible := False;
+      PnlNewImages.Visible := True;
+      NewImagesList.Items := LoadImage.Files;
+    finally
+      LoadImage.Files.Clear;
+    end;
   end;
 end;
 
 
 procedure TfrmItemForm.RefreshAndClose;
 begin
-  dmMain.cdsItemsCRUD.Close;
+  dmMain.qryItemsCRUD.Close;
   dmMain.cdsItemsList.Refresh;
   Self.Close;
 end;
 
-procedure TfrmItemForm.SaveImage(objCode: integer);
+procedure TfrmItemForm.SaveImages(objCode: integer);
+var
+  item: string;
 begin
-  if (LoadImage.FileName <> '') and (Image1.Picture <> nil)
-    and (LoadImage.FileName <> dmMain.FindObjectImage(objCode)) then
+  if (NewImagesList.Items.Count > 0) then
   begin
-    if FileExists(dmMain.FindObjectImage(objCode)) then
-      DeleteFile(dmMain.FindObjectImage(objCode));
-    Image1.Picture.SaveToFile(dmMain.ImagesPath + dmMain.ObjectImageName(objCode, ExtractFileExt(LoadImage.FileName)));
+    for item in NewImagesList.Items do
+    begin
+      Image1.Picture.LoadFromFile(item);
+      if (Image1.Picture <> nil) then
+        Image1.Picture.SaveToFile(dmMain.ItemImagesPath(objCode) + ExtractFileName(item));
+    end;
+    LoadImages(objCode);
   end;
 end;
 

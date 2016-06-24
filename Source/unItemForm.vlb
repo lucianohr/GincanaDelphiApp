@@ -46,13 +46,13 @@ Coordinates=172,10,119,159
 [Label2]
 Coordinates=10,254,46,51
 
-[dmMain.cdsItemsCRUD]
-Coordinates=10,10,130,195
-
 [btnDelete]
 Coordinates=399,10,61,51
 Visible=True
 
 []
 Coordinates=82,322,64,33
+
+[dmMain.]
+Coordinates=10,10,130,195
 

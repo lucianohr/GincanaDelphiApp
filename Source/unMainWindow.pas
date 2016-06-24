@@ -60,8 +60,8 @@ end;
 procedure TfrmMainWindow.btnNewItemClick(Sender: TObject);
 begin
   CreateFormItem;
-  dmMain.cdsItemsCRUD.Open;
-  dmMain.cdsItemsCRUD.Insert;
+  dmMain.qryItemsCRUD.Open;
+  dmMain.qryItemsCRUD.Insert;
   frmItemForm.Show;
 end;
 
@@ -87,11 +87,10 @@ end;
 procedure TfrmMainWindow.DBGrid1DblClick(Sender: TObject);
 begin
   CreateFormItem;
-  dmMain.cdsItemsCRUD.Close;
-  dmMain.cdsItemsCRUD.FetchParams;
-  dmMain.cdsItemsCRUD.ParamByName('id').AsInteger := dmMain.cdsItemsList.FieldByName('id').AsInteger;
-  dmMain.cdsItemsCRUD.Open;
-  dmMain.cdsItemsCRUD.Edit;
+  dmMain.qryItemsCRUD.Close;
+  dmMain.qryItemsCRUD.ParamByName('id').AsInteger := dmMain.cdsItemsList.FieldByName('id').AsInteger;
+  dmMain.qryItemsCRUD.Open;
+  dmMain.qryItemsCRUD.Edit;
   frmItemForm.Show;
 end;
 

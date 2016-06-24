@@ -27,40 +27,35 @@ type
     cdsItemsListcreated_at: TDateTimeField;
     cdsItemsListupdated_at: TDateTimeField;
     qryItemsCRUD: TFDQuery;
-    dspItemsCRUD: TDataSetProvider;
-    cdsItemsCRUD: TClientDataSet;
     dsItemsCRUD: TDataSource;
-    cdsItemsCRUDid: TAutoIncField;
-    cdsItemsCRUDbox_number: TIntegerField;
-    cdsItemsCRUDyear: TIntegerField;
-    cdsItemsCRUDdescription: TStringField;
-    cdsItemsCRUDkeywords: TMemoField;
-    cdsItemsCRUDcreated_at: TDateTimeField;
-    cdsItemsCRUDupdated_at: TDateTimeField;
     qryUsers: TFDQuery;
     dspUsers: TDataSetProvider;
     cdsUsers: TClientDataSet;
     cdsUsersid: TAutoIncField;
     cdsUsersusername: TStringField;
     cdsUserspassword: TStringField;
+    FDUpdateSQL1: TFDUpdateSQL;
+    qryItemsCRUDid: TFDAutoIncField;
+    qryItemsCRUDbox_number: TIntegerField;
+    qryItemsCRUDyear: TIntegerField;
+    qryItemsCRUDdescription: TStringField;
+    qryItemsCRUDkeywords: TMemoField;
+    qryItemsCRUDcreated_at: TDateTimeField;
+    qryItemsCRUDupdated_at: TDateTimeField;
     procedure DataModuleCreate(Sender: TObject);
-    procedure cdsItemsCRUDBeforePost(DataSet: TDataSet);
-    procedure dspItemsCRUDAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
-      DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
-    procedure cdsItemsCRUDNewRecord(DataSet: TDataSet);
+    procedure qryItemsCRUDBeforePost(DataSet: TDataSet);
   private
     { Private declarations }
     procedure DeleteAdminUser;
   public
     { Public declarations }
-    FObjectID: integer;
     function HashMD5(source: string): string;
     function HasAdminUser: boolean;
     procedure CreateAdminUser(newPass: string);
     function VerifyPassword(pass: string): boolean;
     function ImagesPath: string;
-    function ObjectImageName(id: integer; ext: string): string;
-    function FindObjectImage(id: integer): TFileName;
+    function ItemImagesPath(id: integer): string;
+    function FindItemImages(id: integer): TStrings;
   end;
 
 var
@@ -75,7 +70,7 @@ uses
 
 {$R *.dfm}
 
-procedure TdmMain.cdsItemsCRUDBeforePost(DataSet: TDataSet);
+procedure TdmMain.qryItemsCRUDBeforePost(DataSet: TDataSet);
 var
   field: TField;
 begin
@@ -94,11 +89,6 @@ begin
       Abort;
     end;
   end;
-end;
-
-procedure TdmMain.cdsItemsCRUDNewRecord(DataSet: TDataSet);
-begin
-  FObjectID := 0;
 end;
 
 procedure TdmMain.CreateAdminUser(newPass: string);
@@ -147,24 +137,24 @@ begin
   end;
 end;
 
-procedure TdmMain.dspItemsCRUDAfterUpdateRecord(Sender: TObject; SourceDS: TDataSet;
-  DeltaDS: TCustomClientDataSet; UpdateKind: TUpdateKind);
-begin
-  // id do novo Objeto inserido. Nome da imagem
-  if (UpdateKind = ukInsert) then
-    FObjectID := SourceDS.FieldByName('id').Value;
-end;
-
-function TdmMain.FindObjectImage(id: integer): TFileName;
+function TdmMain.FindItemImages(id: integer): TStrings;
 var
   SRec: TSearchRec;
-  TmpName: string;
+  Res: integer;
 begin
-  TmpName := format('%.7d', [id]);
-  if FindFirst(ImagesPath + TmpName + '.*', faAnyfile, SRec ) = 0 then
-    result := ImagesPath + SRec.Name
-  else
-    result := '';
+  result := TStringList.Create;
+  Res := FindFirst(ItemImagesPath(id) + '*.*', faNormal, SRec );
+  if Res = 0 then
+  try
+    while res = 0 do
+    begin
+      if (SRec.Attr and faDirectory <> faDirectory) then
+        Result.Add( SRec.Name );
+      Res := FindNext(SRec);
+    end;
+  finally
+    FindClose(SRec)
+  end;
 end;
 
 function TdmMain.HashMD5(source: string): string;
@@ -181,13 +171,13 @@ end;
 
 function TdmMain.ImagesPath: string;
 begin
-  ForceDirectories(ExtractFilePath(Application.ExeName) + 'Images');
   result := ExtractFilePath(Application.ExeName) + 'Images\';
 end;
 
-function TdmMain.ObjectImageName(id: integer; ext: string): string;
+function TdmMain.ItemImagesPath(id: integer): string;
 begin
-  result := format('%.7d%s', [id, ext]);
+  ForceDirectories(ImagesPath + 'Item_' + IntToStr(id));
+  result := ImagesPath + 'Item_' + IntToStr(id) + '\';
 end;
 
 function TdmMain.VerifyPassword(pass: string): boolean;

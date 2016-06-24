@@ -12,6 +12,7 @@ object dmMain: TdmMain
     FormatOptions.AssignedValues = [fvSE2Null, fvFmtDisplayDateTime, fvSortOptions]
     FormatOptions.StrsEmpty2Null = True
     FormatOptions.SortOptions = [soNoCase, soNullFirst]
+    Connected = True
     LoginPrompt = False
     Left = 32
     Top = 28
@@ -24,7 +25,7 @@ object dmMain: TdmMain
     Left = 328
     Top = 192
     Bitmap = {
-      494C01010B003000540018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B0030005C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -994,9 +995,13 @@ object dmMain: TdmMain
     Top = 32
   end
   object qryItemsCRUD: TFDQuery
+    BeforePost = qryItemsCRUDBeforePost
     Connection = dbConnection
     Transaction = dbTransaction
+    UpdateOptions.AssignedValues = [uvUpdateMode, uvFetchGeneratorsPoint]
+    UpdateOptions.UpdateMode = upWhereAll
     UpdateOptions.KeyFields = 'id'
+    UpdateObject = FDUpdateSQL1
     SQL.Strings = (
       
         'select id, box_number, year, description, keywords, created_at, ' +
@@ -1011,70 +1016,55 @@ object dmMain: TdmMain
         ParamType = ptInput
         Value = Null
       end>
-  end
-  object dspItemsCRUD: TDataSetProvider
-    DataSet = qryItemsCRUD
-    Options = [poPropogateChanges, poUseQuoteChar]
-    AfterUpdateRecord = dspItemsCRUDAfterUpdateRecord
-    Left = 104
-    Top = 136
-  end
-  object cdsItemsCRUD: TClientDataSet
-    Aggregates = <>
-    FilterOptions = [foCaseInsensitive]
-    FetchOnDemand = False
-    Params = <
-      item
-        DataType = ftInteger
-        Name = 'ID'
-        ParamType = ptInput
-      end>
-    ProviderName = 'dspItemsCRUD'
-    BeforePost = cdsItemsCRUDBeforePost
-    OnNewRecord = cdsItemsCRUDNewRecord
-    Left = 104
-    Top = 188
-    object cdsItemsCRUDid: TAutoIncField
+    object qryItemsCRUDid: TFDAutoIncField
       DisplayLabel = 'C'#243'digo'
       FieldName = 'id'
-      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ClientAutoIncrement = False
     end
-    object cdsItemsCRUDbox_number: TIntegerField
+    object qryItemsCRUDbox_number: TIntegerField
       DisplayLabel = 'Caixa'
       FieldName = 'box_number'
+      Origin = 'box_number'
       Required = True
     end
-    object cdsItemsCRUDyear: TIntegerField
+    object qryItemsCRUDyear: TIntegerField
       DisplayLabel = 'Ano'
       FieldName = 'year'
+      Origin = 'year'
       Required = True
     end
-    object cdsItemsCRUDdescription: TStringField
+    object qryItemsCRUDdescription: TStringField
       DisplayLabel = 'Palavras-chave'
       FieldName = 'description'
+      Origin = 'description'
       Size = 255
     end
-    object cdsItemsCRUDkeywords: TMemoField
+    object qryItemsCRUDkeywords: TMemoField
       DisplayLabel = 'Palavras-chave'
       FieldName = 'keywords'
+      Origin = 'keywords'
       Required = True
       BlobType = ftMemo
     end
-    object cdsItemsCRUDcreated_at: TDateTimeField
+    object qryItemsCRUDcreated_at: TDateTimeField
       DisplayLabel = 'Cadastrado em'
       FieldName = 'created_at'
+      Origin = 'created_at'
       Required = True
     end
-    object cdsItemsCRUDupdated_at: TDateTimeField
+    object qryItemsCRUDupdated_at: TDateTimeField
       DisplayLabel = 'Atualizado em'
       FieldName = 'updated_at'
+      Origin = 'updated_at'
       Required = True
     end
   end
   object dsItemsCRUD: TDataSource
-    DataSet = cdsItemsCRUD
+    DataSet = qryItemsCRUD
     Left = 104
-    Top = 240
+    Top = 136
   end
   object qryUsers: TFDQuery
     Connection = dbConnection
@@ -1122,5 +1112,42 @@ object dmMain: TdmMain
       Required = True
       Size = 255
     end
+  end
+  object FDUpdateSQL1: TFDUpdateSQL
+    Connection = dbConnection
+    InsertSQL.Strings = (
+      'INSERT INTO ITEMS'
+      '(BOX_NUMBER, YEAR, KEYWORDS, DESCRIPTION, '
+      '  CREATED_AT, UPDATED_AT)'
+      
+        'VALUES (:NEW_BOX_NUMBER, :NEW_YEAR, :NEW_KEYWORDS, :NEW_DESCRIPT' +
+        'ION, '
+      '  :NEW_CREATED_AT, :NEW_UPDATED_AT);'
+      'SELECT LAST_INSERT_AUTOGEN() AS ID, CREATED_AT, UPDATED_AT'
+      'FROM ITEMS'
+      'WHERE ID = LAST_INSERT_AUTOGEN()')
+    ModifySQL.Strings = (
+      'UPDATE ITEMS'
+      
+        'SET ID = :NEW_ID, BOX_NUMBER = :NEW_BOX_NUMBER, YEAR = :NEW_YEAR' +
+        ', '
+      '  KEYWORDS = :NEW_KEYWORDS, DESCRIPTION = :NEW_DESCRIPTION, '
+      '  CREATED_AT = :NEW_CREATED_AT, UPDATED_AT = :NEW_UPDATED_AT'
+      'WHERE ID = :OLD_ID;'
+      'SELECT ID, CREATED_AT, UPDATED_AT'
+      'FROM ITEMS'
+      'WHERE ID = :NEW_ID')
+    DeleteSQL.Strings = (
+      'DELETE FROM ITEMS'
+      'WHERE ID = :OLD_ID')
+    FetchRowSQL.Strings = (
+      
+        'SELECT LAST_INSERT_AUTOGEN() AS ID, BOX_NUMBER, YEAR, KEYWORDS, ' +
+        'DESCRIPTION, '
+      '  CREATED_AT, UPDATED_AT'
+      'FROM ITEMS'
+      'WHERE ID = :ID')
+    Left = 436
+    Top = 168
   end
 end
