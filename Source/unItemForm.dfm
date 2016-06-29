@@ -249,6 +249,18 @@ object frmItemForm: TfrmItemForm
       OnClick = ImagesListClick
     end
   end
+  object BtnRemoveImage: TButton
+    Left = 73
+    Top = 271
+    Width = 33
+    Height = 31
+    Hint = 'Remover imagem'
+    Anchors = [akRight, akBottom]
+    ImageIndex = 11
+    Images = dmMain.ImageList1
+    TabOrder = 11
+    OnClick = BtnRemoveImageClick
+  end
   object LoadImage: TOpenPictureDialog
     Filter = 
       'Todos (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|Portable Network G' +

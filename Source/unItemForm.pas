@@ -36,6 +36,7 @@ type
     Label8: TLabel;
     NewImagesList: TListBox;
     Label9: TLabel;
+    BtnRemoveImage: TButton;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSaveClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
@@ -44,6 +45,7 @@ type
     procedure btnLoadImageClick(Sender: TObject);
     procedure Image1DblClick(Sender: TObject);
     procedure ImagesListClick(Sender: TObject);
+    procedure BtnRemoveImageClick(Sender: TObject);
   private
     procedure RefreshAndClose;
     procedure SaveImages(objCode: integer);
@@ -141,6 +143,15 @@ begin
   end;
 end;
 
+
+procedure TfrmItemForm.BtnRemoveImageClick(Sender: TObject);
+begin
+  if (ImagesList.ItemIndex >= 0) and (Application.MessageBox('Deseja remover a imagem selecionada?', PWideChar(Application.Title), MB_YESNO or MB_ICONQUESTION) = IDYES) then
+  begin
+    DeleteFile(dmMain.ItemImagesPath(dmMain.qryItemsCRUDid.AsInteger) + ImagesList.Items[ImagesList.ItemIndex]);
+    LoadImages(dmMain.qryItemsCRUDid.AsInteger);
+  end;
+end;
 
 procedure TfrmItemForm.RefreshAndClose;
 begin
