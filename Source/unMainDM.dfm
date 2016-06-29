@@ -1,12 +1,20 @@
 object dmMain: TdmMain
   OldCreateOrder = False
+  OnCreate = DataModuleCreate
   Height = 416
   Width = 686
-  object FDConnection1: TFDConnection
+  object dbConnection: TFDConnection
+    ConnectionName = 'dbGincana.sl3'
     Params.Strings = (
-      'DriverID=SQLite')
-    Left = 144
-    Top = 104
+      'Database=D:\desenvolvimento\AppGincana\DelphiApp\dbGincana.sl3'
+      'DriverID=SQLite'
+      'StringFormat=ANSI')
+    FormatOptions.AssignedValues = [fvSE2Null, fvFmtDisplayDateTime, fvSortOptions]
+    FormatOptions.StrsEmpty2Null = True
+    FormatOptions.SortOptions = [soNoCase, soNullFirst]
+    LoginPrompt = False
+    Left = 32
+    Top = 28
   end
   object ImageList1: TImageList
     ColorDepth = cd32Bit
@@ -16,7 +24,7 @@ object dmMain: TdmMain
     Left = 328
     Top = 192
     Bitmap = {
-      494C01010B003000200018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B003000600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -913,5 +921,233 @@ object dmMain: TdmMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000}
+  end
+  object qryItemsList: TFDQuery
+    Connection = dbConnection
+    Transaction = dbTransaction
+    SQL.Strings = (
+      
+        'select id, box_number, year, description, created_at, updated_at' +
+        ' from items')
+    Left = 32
+    Top = 84
+  end
+  object dbTransaction: TFDTransaction
+    Connection = dbConnection
+    Left = 104
+    Top = 28
+  end
+  object dspItemsList: TDataSetProvider
+    DataSet = qryItemsList
+    Left = 32
+    Top = 136
+  end
+  object cdsItemsList: TClientDataSet
+    Aggregates = <>
+    FilterOptions = [foCaseInsensitive]
+    FetchOnDemand = False
+    Params = <>
+    ProviderName = 'dspItemsList'
+    ReadOnly = True
+    Left = 32
+    Top = 188
+    object cdsItemsListid: TAutoIncField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object cdsItemsListbox_number: TIntegerField
+      DisplayLabel = 'Caixa'
+      FieldName = 'box_number'
+      Required = True
+    end
+    object cdsItemsListyear: TIntegerField
+      DisplayLabel = 'Ano'
+      FieldName = 'year'
+      Required = True
+    end
+    object cdsItemsListdescription: TStringField
+      DisplayLabel = 'Palavras-chave'
+      DisplayWidth = 50
+      FieldName = 'description'
+      Size = 255
+    end
+    object cdsItemsListcreated_at: TDateTimeField
+      DisplayLabel = 'Cadastrado em'
+      FieldName = 'created_at'
+      Required = True
+    end
+    object cdsItemsListupdated_at: TDateTimeField
+      DisplayLabel = 'Atualizado em'
+      FieldName = 'updated_at'
+      Required = True
+    end
+  end
+  object dsItemsList: TDataSource
+    DataSet = cdsItemsList
+    Left = 32
+    Top = 240
+  end
+  object FDGUIxWaitCursor1: TFDGUIxWaitCursor
+    Provider = 'Forms'
+    Left = 276
+    Top = 32
+  end
+  object qryItemsCRUD: TFDQuery
+    BeforePost = qryItemsCRUDBeforePost
+    Connection = dbConnection
+    Transaction = dbTransaction
+    UpdateOptions.AssignedValues = [uvUpdateMode, uvFetchGeneratorsPoint]
+    UpdateOptions.UpdateMode = upWhereAll
+    UpdateOptions.KeyFields = 'id'
+    UpdateObject = FDUpdateSQL1
+    SQL.Strings = (
+      
+        'select id, box_number, year, description, keywords, created_at, ' +
+        'updated_at from items'
+      'where id = :id')
+    Left = 104
+    Top = 84
+    ParamData = <
+      item
+        Name = 'ID'
+        DataType = ftInteger
+        ParamType = ptInput
+        Value = Null
+      end>
+    object qryItemsCRUDid: TFDAutoIncField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'id'
+      Origin = 'id'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+      ClientAutoIncrement = False
+    end
+    object qryItemsCRUDbox_number: TIntegerField
+      DisplayLabel = 'Caixa'
+      FieldName = 'box_number'
+      Origin = 'box_number'
+      Required = True
+    end
+    object qryItemsCRUDyear: TIntegerField
+      DisplayLabel = 'Ano'
+      FieldName = 'year'
+      Origin = 'year'
+      Required = True
+    end
+    object qryItemsCRUDdescription: TStringField
+      DisplayLabel = 'Palavras-chave'
+      FieldName = 'description'
+      Origin = 'description'
+      Size = 255
+    end
+    object qryItemsCRUDkeywords: TMemoField
+      DisplayLabel = 'Palavras-chave'
+      FieldName = 'keywords'
+      Origin = 'keywords'
+      Required = True
+      BlobType = ftMemo
+    end
+    object qryItemsCRUDcreated_at: TDateTimeField
+      DisplayLabel = 'Cadastrado em'
+      FieldName = 'created_at'
+      Origin = 'created_at'
+      Required = True
+    end
+    object qryItemsCRUDupdated_at: TDateTimeField
+      DisplayLabel = 'Atualizado em'
+      FieldName = 'updated_at'
+      Origin = 'updated_at'
+      Required = True
+    end
+  end
+  object dsItemsCRUD: TDataSource
+    DataSet = qryItemsCRUD
+    Left = 104
+    Top = 136
+  end
+  object qryUsers: TFDQuery
+    Connection = dbConnection
+    Transaction = dbTransaction
+    SQL.Strings = (
+      'select id, username, password from users'
+      'where username = :user')
+    Left = 188
+    Top = 84
+    ParamData = <
+      item
+        Name = 'USER'
+        DataType = ftString
+        ParamType = ptInput
+        Value = 'admin'
+      end>
+  end
+  object dspUsers: TDataSetProvider
+    DataSet = qryUsers
+    Left = 188
+    Top = 136
+  end
+  object cdsUsers: TClientDataSet
+    Aggregates = <>
+    Params = <
+      item
+        DataType = ftString
+        Name = 'USER'
+        ParamType = ptInput
+        Value = 'admin'
+      end>
+    ProviderName = 'dspUsers'
+    Left = 188
+    Top = 188
+    object cdsUsersid: TAutoIncField
+      FieldName = 'id'
+      ReadOnly = True
+    end
+    object cdsUsersusername: TStringField
+      FieldName = 'username'
+      Required = True
+    end
+    object cdsUserspassword: TStringField
+      FieldName = 'password'
+      Required = True
+      Size = 255
+    end
+  end
+  object FDUpdateSQL1: TFDUpdateSQL
+    Connection = dbConnection
+    InsertSQL.Strings = (
+      'INSERT INTO ITEMS'
+      '(BOX_NUMBER, YEAR, KEYWORDS, DESCRIPTION, '
+      '  CREATED_AT, UPDATED_AT)'
+      
+        'VALUES (:NEW_BOX_NUMBER, :NEW_YEAR, :NEW_KEYWORDS, :NEW_DESCRIPT' +
+        'ION, '
+      '  :NEW_CREATED_AT, :NEW_UPDATED_AT);'
+      'SELECT LAST_INSERT_AUTOGEN() AS ID, CREATED_AT, UPDATED_AT'
+      'FROM ITEMS'
+      'WHERE ID = LAST_INSERT_AUTOGEN()')
+    ModifySQL.Strings = (
+      'UPDATE ITEMS'
+      
+        'SET ID = :NEW_ID, BOX_NUMBER = :NEW_BOX_NUMBER, YEAR = :NEW_YEAR' +
+        ', '
+      '  KEYWORDS = :NEW_KEYWORDS, DESCRIPTION = :NEW_DESCRIPTION, '
+      '  CREATED_AT = :NEW_CREATED_AT, UPDATED_AT = :NEW_UPDATED_AT'
+      'WHERE ID = :OLD_ID;'
+      'SELECT ID, CREATED_AT, UPDATED_AT'
+      'FROM ITEMS'
+      'WHERE ID = :NEW_ID')
+    DeleteSQL.Strings = (
+      'DELETE FROM ITEMS'
+      'WHERE ID = :OLD_ID')
+    FetchRowSQL.Strings = (
+      
+        'SELECT LAST_INSERT_AUTOGEN() AS ID, BOX_NUMBER, YEAR, KEYWORDS, ' +
+        'DESCRIPTION, '
+      '  CREATED_AT, UPDATED_AT'
+      'FROM ITEMS'
+      'WHERE ID = :ID')
+    Left = 436
+    Top = 168
   end
 end

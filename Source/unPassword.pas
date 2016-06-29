@@ -13,7 +13,7 @@ type
     CancelBtn: TButton;
     lblError: TLabel;
     Image1: TImage;
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
   public
@@ -25,31 +25,26 @@ var
 
 implementation
 
-uses unMainDM;
-
-function VerifyPassword(pass: string): boolean;
-begin
-  frmPassword.lblError.Visible := True;
-  result := pass = 'caveira';
-end;
+uses unMainDM, unMainWindow;
 
 {$R *.dfm}
 
-procedure TfrmPassword.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+procedure TfrmPassword.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  if (frmPassword.ModalResult = mrCancel) then
+  if ModalResult = mrOk then
   begin
-    CanClose := true;
+    if not dmMain.VerifyPassword(edtPassword.Text) then
+    begin
+      lblError.Visible := True;
+      edtPassword.SelectAll;
+      edtPassword.SetFocus;
+      Action := caNone;
+      Abort;
+    end;
+    frmMainWindow.FormShow(Sender);
   end
-  else if (frmPassword.ModalResult = mrOk) and (VerifyPassword(edtPassword.Text)) then
-  begin
-    CanClose := true;
-  end
-  else begin
-    edtPassword.SelectAll;
-    edtPassword.SetFocus;
-    CanClose := false;
-  end;
+  else
+    Application.Terminate;
 end;
 
 end.
