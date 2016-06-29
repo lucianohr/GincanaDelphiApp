@@ -11,12 +11,13 @@ uses
   Vcl.Styles,
   Windows,
   unNewPassword in 'Source\unNewPassword.pas' {frmNewPassword},
-  unImageZoom in 'Source\unImageZoom.pas' {frmImageZoom};
+  unImageZoom in 'Source\unImageZoom.pas' {frmImageZoom},
+  unGlobals in 'Source\unGlobals.pas';
 
 {$R *.res}
 
 begin
-  if CreateMutex(nil, True, 'C5B7B5E3-5AEA-4589-AF35-77C5629F806B') = 0 then
+  if CreateMutex(nil, True, unGlobals.APP_ID) = 0 then
     RaiseLastOSError;
 
   if GetLastError = ERROR_ALREADY_EXISTS then

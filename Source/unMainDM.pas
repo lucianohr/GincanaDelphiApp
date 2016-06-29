@@ -49,7 +49,6 @@ type
     procedure DeleteAdminUser;
   public
     { Public declarations }
-    function HashMD5(source: string): string;
     function HasAdminUser: boolean;
     procedure CreateAdminUser(newPass: string);
     function VerifyPassword(pass: string): boolean;
@@ -64,7 +63,7 @@ var
 implementation
 
 uses
-  Vcl.forms, Dialogs, System.UITypes, IdGlobal, IdHash, IdHashMessageDigest;
+  Vcl.forms, Dialogs, System.UITypes, unGlobals;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
@@ -102,7 +101,7 @@ begin
     begin
       Insert;
       FindField('username').AsString := 'admin';
-      FindField('password').AsString := HashMD5(newPass);
+      FindField('password').AsString := unGlobals.HashMD5(newPass);
       Post;
       ApplyUpdates(0);
     end;
@@ -154,18 +153,6 @@ begin
     end;
   finally
     FindClose(SRec)
-  end;
-end;
-
-function TdmMain.HashMD5(source: string): string;
-var
-  md5: TIdHashMessageDigest5;
-begin
-  md5 := TIdHashMessageDigest5.Create;
-  try
-    Result := md5.HashStringAsHex(source);
-  finally
-    FreeAndNil(md5);
   end;
 end;
 
