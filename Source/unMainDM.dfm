@@ -12,7 +12,6 @@ object dmMain: TdmMain
     FormatOptions.AssignedValues = [fvSE2Null, fvFmtDisplayDateTime, fvSortOptions]
     FormatOptions.StrsEmpty2Null = True
     FormatOptions.SortOptions = [soNoCase, soNullFirst]
-    Connected = True
     LoginPrompt = False
     Left = 32
     Top = 28
@@ -25,7 +24,7 @@ object dmMain: TdmMain
     Left = 328
     Top = 192
     Bitmap = {
-      494C01010B0030005C0018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010B003000600018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000060000000480000000100200000000000006C
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1021,6 +1020,7 @@ object dmMain: TdmMain
       FieldName = 'id'
       Origin = 'id'
       ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
       ClientAutoIncrement = False
     end
     object qryItemsCRUDbox_number: TIntegerField
