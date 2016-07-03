@@ -90,7 +90,8 @@ begin
   dmMain.qryItemsCRUD.Close;
   dmMain.qryItemsCRUD.ParamByName('id').AsInteger := dmMain.cdsItemsList.FieldByName('id').AsInteger;
   dmMain.qryItemsCRUD.Open;
-  dmMain.qryItemsCRUD.Edit;
+  if not dmMain.dbConnection.UpdateOptions.ReadOnly then
+    dmMain.qryItemsCRUD.Edit;
   frmItemForm.Show;
 end;
 
@@ -112,6 +113,7 @@ begin
   if dmMain.dbConnection.Connected = true then
   begin
     dmMain.cdsItemsList.Active := true;
+    btnNewItem.Enabled := not dmMain.dbConnection.UpdateOptions.ReadOnly;
   end;
 end;
 
