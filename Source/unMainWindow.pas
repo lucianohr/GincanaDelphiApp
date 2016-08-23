@@ -66,13 +66,29 @@ begin
 end;
 
 procedure TfrmMainWindow.btnSearchClick(Sender: TObject);
+var
+  item, filterCondition: string;
+  index: byte;
+  Splitted: TArray<String>;
 begin
   with dmMain.cdsItemsList do
   begin
     try
       Filtered := False;
       case searchFieldSelect.ItemIndex of
-        0: Filter := 'UPPER(description) Like ''%' + AnsiUpperCase(searchText.Text) + '%''';
+        0: begin
+          Splitted := AnsiUpperCase(searchText.Text).Split([' ', ',', ';', '\', '/']);
+          filterCondition := '';
+          index := 0;
+          for item in Splitted do
+          begin
+            inc(index);
+            filterCondition := filterCondition + '(UPPER(description) Like ''%' + item + '%'')';
+            if index <> Length(Splitted) then
+              filterCondition := filterCondition + ' OR ';
+          end;
+          Filter := filterCondition;
+        end;
         1: Filter := Format('box_number = %d', [StrToInt(searchText.Text)]);
         2: Filter := Format('year = %d', [StrToInt(searchText.Text)]);
       end;
