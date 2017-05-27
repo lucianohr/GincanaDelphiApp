@@ -8,7 +8,8 @@ uses
   FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, Data.DB,
   FireDAC.Comp.Client, System.ImageList, Vcl.ImgList, Vcl.Controls, FireDAC.Stan.Param,
   FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet, Datasnap.Provider,
-  Datasnap.DBClient, FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.FMXUI.Wait;
+  Datasnap.DBClient, FireDAC.VCLUI.Wait, FireDAC.Comp.UI, FireDAC.FMXUI.Wait,
+  frxClass, frxDBSet, frxExportPDF;
 
 type
   TdmMain = class(TDataModule)
@@ -42,6 +43,9 @@ type
     qryItemsCRUDkeywords: TMemoField;
     qryItemsCRUDcreated_at: TDateTimeField;
     qryItemsCRUDupdated_at: TDateTimeField;
+    frxPDFExport1: TfrxPDFExport;
+    frxReport1: TfrxReport;
+    frxDBDataset1: TfrxDBDataset;
     procedure DataModuleCreate(Sender: TObject);
     procedure qryItemsCRUDBeforePost(DataSet: TDataSet);
   private

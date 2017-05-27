@@ -18,6 +18,7 @@ type
     DBGrid1: TDBGrid;
     btnClear: TButton;
     btnChangePass: TButton;
+    Button1: TButton;
     procedure btnNewItemClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure DBGrid1TitleClick(Column: TColumn);
@@ -25,6 +26,7 @@ type
     procedure btnClearClick(Sender: TObject);
     procedure btnSearchClick(Sender: TObject);
     procedure btnChangePassClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     procedure CreateFormItem;
     { Private declarations }
@@ -98,6 +100,12 @@ begin
       btnClear.Click;
     end;
   end;
+end;
+
+procedure TfrmMainWindow.Button1Click(Sender: TObject);
+begin
+  dmMain.frxReport1.FileName := 'object_list.fr3';
+  dmMain.frxReport1.ShowReport(True);
 end;
 
 procedure TfrmMainWindow.DBGrid1DblClick(Sender: TObject);
