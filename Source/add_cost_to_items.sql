@@ -1,0 +1,2 @@
+ALTER TABLE items
+ADD cost REAL;

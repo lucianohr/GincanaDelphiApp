@@ -50,24 +50,27 @@ object frmMainWindow: TfrmMainWindow
     object searchFieldSelect: TComboBox
       Left = 181
       Top = 16
-      Width = 125
+      Width = 165
       Height = 26
+      Hint = '(o item deve conter ambas as palavras pesquisadas)'
       Style = csDropDownList
       ItemIndex = 0
       TabOrder = 1
-      Text = 'Palavra-chave'
+      Text = 'Palavra-chave (E)'
+      OnSelect = searchFieldSelectSelect
       Items.Strings = (
-        'Palavra-chave'
+        'Palavra-chave (E)'
+        'Palavra-chave (OU)'
         'Caixa'
         'Ano')
     end
     object searchText: TEdit
-      Left = 312
+      Left = 352
       Top = 16
-      Width = 413
+      Width = 373
       Height = 26
       TabOrder = 2
-      TextHint = 'o que deseja pesquisar'
+      TextHint = '(digite aqui o que deseja pesquisar)'
     end
     object btnSearch: TButton
       Left = 731
@@ -153,27 +156,37 @@ object frmMainWindow: TfrmMainWindow
         Alignment = taLeftJustify
         Expanded = False
         FieldName = 'box_number'
+        Width = 64
         Visible = True
       end
       item
         Alignment = taLeftJustify
         Expanded = False
         FieldName = 'year'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'description'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'created_at'
+        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'updated_at'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'cost'
         Visible = True
       end>
   end

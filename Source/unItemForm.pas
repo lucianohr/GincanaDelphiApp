@@ -37,6 +37,8 @@ type
     NewImagesList: TListBox;
     Label9: TLabel;
     BtnRemoveImage: TButton;
+    DBEdit4: TDBEdit;
+    Label10: TLabel;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnSaveClick(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);

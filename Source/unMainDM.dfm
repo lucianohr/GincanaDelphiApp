@@ -6,7 +6,7 @@ object dmMain: TdmMain
   object dbConnection: TFDConnection
     ConnectionName = 'dbGincana.sl3'
     Params.Strings = (
-      'Database=F:\AppGincana\DelphiApp\Win32\Debug\dbGincana.sl3'
+      'Database=C:\workspace\GincanaDelphiApp\dbGincana.sl3'
       'StringFormat=ANSI'
       'DriverID=SQLite')
     FormatOptions.AssignedValues = [fvSE2Null, fvFmtDisplayDateTime, fvSortOptions]
@@ -24,7 +24,7 @@ object dmMain: TdmMain
     Left = 328
     Top = 192
     Bitmap = {
-      494C01010D003000840018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010D003000880018001800FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000600000006000000001002000000000000090
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1224,8 +1224,8 @@ object dmMain: TdmMain
     Transaction = dbTransaction
     SQL.Strings = (
       
-        'select id, box_number, year, description, created_at, updated_at' +
-        ' from items')
+        'select id, box_number, year, description, cost, created_at, upda' +
+        'ted_at from items')
     Left = 32
     Top = 84
   end
@@ -1274,6 +1274,11 @@ object dmMain: TdmMain
       Origin = 'description'
       Size = 255
     end
+    object cdsItemsListcost: TFloatField
+      DisplayLabel = 'Custo'
+      FieldName = 'cost'
+      DisplayFormat = ',0.00'
+    end
     object cdsItemsListcreated_at: TDateTimeField
       DisplayLabel = 'Cadastrado em'
       FieldName = 'created_at'
@@ -1308,7 +1313,7 @@ object dmMain: TdmMain
     SQL.Strings = (
       
         'select id, box_number, year, description, keywords, created_at, ' +
-        'updated_at from items'
+        'updated_at, cost from items'
       'where id = :id')
     Left = 104
     Top = 84
@@ -1351,6 +1356,12 @@ object dmMain: TdmMain
       Origin = 'keywords'
       Required = True
       BlobType = ftMemo
+    end
+    object qryItemsCRUDcost: TFloatField
+      DisplayLabel = 'Custo'
+      FieldName = 'cost'
+      Origin = 'cost'
+      DisplayFormat = ',0.00'
     end
     object qryItemsCRUDcreated_at: TDateTimeField
       DisplayLabel = 'Cadastrado em'
@@ -1422,21 +1433,21 @@ object dmMain: TdmMain
     InsertSQL.Strings = (
       'INSERT INTO ITEMS'
       '(BOX_NUMBER, YEAR, KEYWORDS, DESCRIPTION, '
-      '  CREATED_AT, UPDATED_AT)'
+      '  CREATED_AT, UPDATED_AT, COST)'
       
         'VALUES (:NEW_BOX_NUMBER, :NEW_YEAR, :NEW_KEYWORDS, :NEW_DESCRIPT' +
         'ION, '
-      '  :NEW_CREATED_AT, :NEW_UPDATED_AT);'
+      '  :NEW_CREATED_AT, :NEW_UPDATED_AT, :NEW_COST);'
       'SELECT LAST_INSERT_AUTOGEN() AS ID, CREATED_AT, UPDATED_AT'
       'FROM ITEMS'
       'WHERE ID = LAST_INSERT_AUTOGEN()')
     ModifySQL.Strings = (
       'UPDATE ITEMS'
       
-        'SET ID = :NEW_ID, BOX_NUMBER = :NEW_BOX_NUMBER, YEAR = :NEW_YEAR' +
-        ', '
-      '  KEYWORDS = :NEW_KEYWORDS, DESCRIPTION = :NEW_DESCRIPTION, '
-      '  CREATED_AT = :NEW_CREATED_AT, UPDATED_AT = :NEW_UPDATED_AT'
+        'SET BOX_NUMBER = :NEW_BOX_NUMBER, YEAR = :NEW_YEAR, KEYWORDS = :' +
+        'NEW_KEYWORDS, '
+      '  DESCRIPTION = :NEW_DESCRIPTION, CREATED_AT = :NEW_CREATED_AT, '
+      '  UPDATED_AT = :NEW_UPDATED_AT, COST = :NEW_COST'
       'WHERE ID = :OLD_ID;'
       'SELECT ID, CREATED_AT, UPDATED_AT'
       'FROM ITEMS'
@@ -1448,7 +1459,7 @@ object dmMain: TdmMain
       
         'SELECT LAST_INSERT_AUTOGEN() AS ID, BOX_NUMBER, YEAR, KEYWORDS, ' +
         'DESCRIPTION, '
-      '  CREATED_AT, UPDATED_AT'
+      '  CREATED_AT, UPDATED_AT, COST'
       'FROM ITEMS'
       'WHERE ID = :ID')
     Left = 436
@@ -1487,7 +1498,7 @@ object dmMain: TdmMain
     PrintOptions.Printer = 'Default'
     PrintOptions.PrintOnSheet = 0
     ReportOptions.CreateDate = 42668.981424108800000000
-    ReportOptions.LastChange = 42693.907765578700000000
+    ReportOptions.LastChange = 42882.909525729170000000
     ScriptLanguage = 'PascalScript'
     ScriptText.Strings = (
       'begin'
@@ -1521,7 +1532,7 @@ object dmMain: TdmMain
         Width = 718.110700000000000000
         Child = frxReport1.Child1
         object Memo5: TfrxMemoView
-          Top = 3.779530000000000000
+          Top = 3.779530000000001000
           Width = 211.653680000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -1566,7 +1577,7 @@ object dmMain: TdmMain
         end
         object Memo3: TfrxMemoView
           Left = 170.078850000000000000
-          Width = 79.370130000000000000
+          Width = 64.252010000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
@@ -1578,7 +1589,7 @@ object dmMain: TdmMain
           ParentFont = False
         end
         object Memo4: TfrxMemoView
-          Left = 253.228510000000000000
+          Left = 238.110390000000000000
           Width = 109.606370000000000000
           Height = 18.897650000000000000
           Font.Charset = DEFAULT_CHARSET
@@ -1595,11 +1606,25 @@ object dmMain: TdmMain
           Color = clBlack
           Frame.Typ = [ftTop]
         end
+        object Memo6: TfrxMemoView
+          Left = 650.079160000000000000
+          Width = 68.031540000000010000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          HAlign = haRight
+          Memo.UTF8W = (
+            'Custo')
+          ParentFont = False
+        end
       end
       object PageFooter1: TfrxPageFooter
         FillType = ftBrush
         Height = 22.677180000000000000
-        Top = 238.110390000000000000
+        Top = 283.464750000000000000
         Width = 718.110700000000000000
         object SysMemo1: TfrxSysMemoView
           Left = 468.661720000000000000
@@ -1675,7 +1700,7 @@ object dmMain: TdmMain
         end
         object frxDBDataset1year: TfrxMemoView
           Left = 170.078850000000000000
-          Width = 79.370130000000000000
+          Width = 64.252010000000000000
           Height = 18.897650000000000000
           DataField = 'year'
           DataSet = frxDBDataset1
@@ -1684,8 +1709,8 @@ object dmMain: TdmMain
             '[frxDBDataset1."year"]')
         end
         object frxDBDataset1description: TfrxMemoView
-          Left = 253.228510000000000000
-          Width = 464.882190000000000000
+          Left = 238.110390000000000000
+          Width = 404.409710000000000000
           Height = 18.897650000000000000
           StretchMode = smMaxHeight
           DataField = 'description'
@@ -1695,10 +1720,63 @@ object dmMain: TdmMain
             '[frxDBDataset1."description"]')
         end
         object Line3: TfrxLineView
-          Top = 0.118120000000000000
+          Top = 0.118120000000004700
           Width = 718.110236220472400000
           Color = clBlack
           Frame.Typ = [ftTop]
+        end
+        object Memo7: TfrxMemoView
+          Left = 650.079160000000000000
+          Width = 68.031540000000010000
+          Height = 18.897650000000000000
+          DataField = 'cost'
+          DataSet = frxDBDataset1
+          DataSetName = 'frxDBDataset1'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[frxDBDataset1."cost"]')
+          ParentFont = False
+        end
+      end
+      object ReportSummary1: TfrxReportSummary
+        FillType = ftBrush
+        Height = 22.677180000000000000
+        Top = 238.110390000000000000
+        Width = 718.110700000000000000
+        object Memo8: TfrxMemoView
+          Left = 510.236550000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Memo.UTF8W = (
+            'Custo Total')
+          ParentFont = False
+        end
+        object SysMemo4: TfrxSysMemoView
+          Left = 608.504330000000000000
+          Width = 109.606370000000000000
+          Height = 18.897650000000000000
+          DisplayFormat.DecimalSeparator = ','
+          DisplayFormat.FormatStr = '%2.2n'
+          DisplayFormat.Kind = fkNumeric
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          HAlign = haRight
+          Memo.UTF8W = (
+            '[SUM(<frxDBDataset1."cost">,MasterData1)]')
+          ParentFont = False
         end
       end
     end

@@ -37,18 +37,25 @@ object frmItemForm: TfrmItemForm
     Caption = 'Caixa'
   end
   object Label3: TLabel
-    Left = 81
-    Top = 71
+    Left = 353
+    Top = 39
     Width = 25
     Height = 18
     Caption = 'Ano'
   end
   object Label4: TLabel
     Left = 8
-    Top = 102
+    Top = 110
     Width = 98
     Height = 18
     Caption = 'Palavras-chave'
+  end
+  object Label10: TLabel
+    Left = 589
+    Top = 39
+    Width = 37
+    Height = 18
+    Caption = 'Custo'
   end
   object PnlLoadedImages: TPanel
     Left = 4
@@ -56,7 +63,7 @@ object frmItemForm: TfrmItemForm
     Width = 369
     Height = 213
     BevelOuter = bvNone
-    TabOrder = 9
+    TabOrder = 10
     object Label5: TLabel
       Left = 44
       Top = 0
@@ -97,7 +104,7 @@ object frmItemForm: TfrmItemForm
     Width = 322
     Height = 213
     BevelOuter = bvNone
-    TabOrder = 8
+    TabOrder = 9
     object Image1: TImage
       Left = 112
       Top = 0
@@ -129,7 +136,7 @@ object frmItemForm: TfrmItemForm
     ImageIndex = 0
     Images = dmMain.ImageList1
     ModalResult = 1
-    TabOrder = 5
+    TabOrder = 6
     OnClick = btnSaveClick
   end
   object btnCancel: TButton
@@ -143,7 +150,7 @@ object frmItemForm: TfrmItemForm
     ImageIndex = 1
     Images = dmMain.ImageList1
     ModalResult = 2
-    TabOrder = 7
+    TabOrder = 8
     OnClick = btnCancelClick
   end
   object DBEdit1: TDBEdit
@@ -156,8 +163,8 @@ object frmItemForm: TfrmItemForm
     TabOrder = 1
   end
   object DBEdit2: TDBEdit
-    Left = 116
-    Top = 68
+    Left = 388
+    Top = 36
     Width = 77
     Height = 26
     DataField = 'year'
@@ -166,13 +173,13 @@ object frmItemForm: TfrmItemForm
   end
   object DBMemo1: TDBMemo
     Left = 116
-    Top = 100
+    Top = 68
     Width = 626
-    Height = 86
+    Height = 118
     DataField = 'keywords'
     DataSource = dmMain.dsItemsCRUD
     ScrollBars = ssVertical
-    TabOrder = 3
+    TabOrder = 4
   end
   object DBEdit3: TDBEdit
     Left = 116
@@ -194,7 +201,7 @@ object frmItemForm: TfrmItemForm
     Caption = 'Excluir'
     ImageIndex = 4
     Images = dmMain.ImageList1
-    TabOrder = 6
+    TabOrder = 7
     OnClick = btnDeleteClick
   end
   object btnLoadImage: TButton
@@ -206,7 +213,7 @@ object frmItemForm: TfrmItemForm
     Anchors = [akRight, akBottom]
     ImageIndex = 7
     Images = dmMain.ImageList1
-    TabOrder = 4
+    TabOrder = 5
     OnClick = btnLoadImageClick
   end
   object PnlNewImages: TPanel
@@ -215,7 +222,7 @@ object frmItemForm: TfrmItemForm
     Width = 742
     Height = 113
     BevelOuter = bvNone
-    TabOrder = 10
+    TabOrder = 11
     Visible = False
     object Label8: TLabel
       Left = 48
@@ -258,8 +265,17 @@ object frmItemForm: TfrmItemForm
     Anchors = [akRight, akBottom]
     ImageIndex = 11
     Images = dmMain.ImageList1
-    TabOrder = 11
+    TabOrder = 12
     OnClick = BtnRemoveImageClick
+  end
+  object DBEdit4: TDBEdit
+    Left = 632
+    Top = 36
+    Width = 110
+    Height = 26
+    DataField = 'cost'
+    DataSource = dmMain.dsItemsCRUD
+    TabOrder = 3
   end
   object LoadImage: TOpenPictureDialog
     Filter = 

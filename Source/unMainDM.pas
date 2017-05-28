@@ -46,6 +46,8 @@ type
     frxPDFExport1: TfrxPDFExport;
     frxReport1: TfrxReport;
     frxDBDataset1: TfrxDBDataset;
+    cdsItemsListcost: TFloatField;
+    qryItemsCRUDcost: TFloatField;
     procedure DataModuleCreate(Sender: TObject);
     procedure qryItemsCRUDBeforePost(DataSet: TDataSet);
   private

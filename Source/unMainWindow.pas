@@ -27,6 +27,7 @@ type
     procedure btnSearchClick(Sender: TObject);
     procedure btnChangePassClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure searchFieldSelectSelect(Sender: TObject);
   private
     procedure CreateFormItem;
     { Private declarations }
@@ -78,7 +79,7 @@ begin
     try
       Filtered := False;
       case searchFieldSelect.ItemIndex of
-        0: begin
+        0, 1: begin
           Splitted := AnsiUpperCase(searchText.Text).Split([' ', ',', ';', '\', '/']);
           filterCondition := '';
           index := 0;
@@ -87,12 +88,15 @@ begin
             inc(index);
             filterCondition := filterCondition + '(UPPER(description) Like ''%' + item + '%'')';
             if index <> Length(Splitted) then
-              filterCondition := filterCondition + ' OR ';
+              case searchFieldSelect.ItemIndex of
+                0: filterCondition := filterCondition + ' AND ';
+                1: filterCondition := filterCondition + ' OR ';
+              end;
           end;
           Filter := filterCondition;
         end;
-        1: Filter := Format('box_number = %d', [StrToInt(searchText.Text)]);
-        2: Filter := Format('year = %d', [StrToInt(searchText.Text)]);
+        2: Filter := Format('box_number = %d', [StrToInt(searchText.Text)]);
+        3: Filter := Format('year = %d', [StrToInt(searchText.Text)]);
       end;
       Filtered := True;
     except
@@ -138,6 +142,16 @@ begin
   begin
     dmMain.cdsItemsList.Active := true;
     btnNewItem.Enabled := not dmMain.dbConnection.UpdateOptions.ReadOnly;
+  end;
+end;
+
+procedure TfrmMainWindow.searchFieldSelectSelect(Sender: TObject);
+begin
+  case searchFieldSelect.ItemIndex of
+    0: searchFieldSelect.Hint := '(o item deve conter ambas as palavras pesquisadas)';
+    1: searchFieldSelect.Hint := '(o item deve conter qualquer uma das palavras pesquisadas)';
+    2: searchFieldSelect.Hint := '(o item deve pertencer a caixa pesquisada)';
+    3: searchFieldSelect.Hint := '(o item deve pertencer ao ano pesquisado)';
   end;
 end;
 
