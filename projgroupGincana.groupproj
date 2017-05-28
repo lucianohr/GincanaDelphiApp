@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{A5FE74F8-4C65-4205-A7C8-5236DCFFAC95}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="prjAppGincana.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="prjGenerateSerial.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="prjAppGincana">
+        <MSBuild Projects="prjAppGincana.dproj"/>
+    </Target>
+    <Target Name="prjAppGincana:Clean">
+        <MSBuild Projects="prjAppGincana.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="prjAppGincana:Make">
+        <MSBuild Projects="prjAppGincana.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="prjGenerateSerial">
+        <MSBuild Projects="prjGenerateSerial.dproj"/>
+    </Target>
+    <Target Name="prjGenerateSerial:Clean">
+        <MSBuild Projects="prjGenerateSerial.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="prjGenerateSerial:Make">
+        <MSBuild Projects="prjGenerateSerial.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="prjAppGincana;prjGenerateSerial"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="prjAppGincana:Clean;prjGenerateSerial:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="prjAppGincana:Make;prjGenerateSerial:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

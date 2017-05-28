@@ -78,7 +78,10 @@ end;
 
 procedure TfrmItemForm.FormShow(Sender: TObject);
 begin
-  btnDelete.Enabled := dmMain.qryItemsCRUD.State in [dsEdit, dsBrowse];
+  btnSave.Enabled := not dmMain.dbConnection.UpdateOptions.ReadOnly;
+  btnDelete.Enabled := (dmMain.qryItemsCRUD.State in [dsEdit, dsBrowse]) and (not dmMain.dbConnection.UpdateOptions.ReadOnly);
+  btnLoadImage.Enabled := not dmMain.dbConnection.UpdateOptions.ReadOnly;
+  BtnRemoveImage.Enabled := not dmMain.dbConnection.UpdateOptions.ReadOnly;
   LoadImages(dmMain.qryItemsCRUDid.AsInteger);
 end;
 

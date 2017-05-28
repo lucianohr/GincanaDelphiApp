@@ -29,7 +29,7 @@ object frmMainWindow: TfrmMainWindow
       984
       53)
     object Label1: TLabel
-      Left = 44
+      Left = 81
       Top = 19
       Width = 87
       Height = 18
@@ -48,7 +48,7 @@ object frmMainWindow: TfrmMainWindow
       OnClick = btnNewItemClick
     end
     object searchFieldSelect: TComboBox
-      Left = 144
+      Left = 181
       Top = 16
       Width = 125
       Height = 26
@@ -62,9 +62,9 @@ object frmMainWindow: TfrmMainWindow
         'Ano')
     end
     object searchText: TEdit
-      Left = 275
+      Left = 312
       Top = 16
-      Width = 450
+      Width = 413
       Height = 26
       TabOrder = 2
       TextHint = 'o que deseja pesquisar'
@@ -105,6 +105,18 @@ object frmMainWindow: TfrmMainWindow
       TabStop = False
       OnClick = btnChangePassClick
     end
+    object Button1: TButton
+      Left = 35
+      Top = 11
+      Width = 33
+      Height = 33
+      Hint = 'Imprimir'
+      ImageIndex = 12
+      Images = dmMain.ImageList1
+      TabOrder = 6
+      TabStop = False
+      OnClick = Button1Click
+    end
   end
   object DBGrid1: TDBGrid
     AlignWithMargins = True
@@ -141,32 +153,27 @@ object frmMainWindow: TfrmMainWindow
         Alignment = taLeftJustify
         Expanded = False
         FieldName = 'box_number'
-        Width = 64
         Visible = True
       end
       item
         Alignment = taLeftJustify
         Expanded = False
         FieldName = 'year'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'description'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'created_at'
-        Width = 64
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'updated_at'
-        Width = 64
         Visible = True
       end>
   end

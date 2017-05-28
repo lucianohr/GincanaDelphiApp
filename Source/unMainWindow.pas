@@ -18,6 +18,7 @@ type
     DBGrid1: TDBGrid;
     btnClear: TButton;
     btnChangePass: TButton;
+    Button1: TButton;
     procedure btnNewItemClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure DBGrid1TitleClick(Column: TColumn);
@@ -25,6 +26,7 @@ type
     procedure btnClearClick(Sender: TObject);
     procedure btnSearchClick(Sender: TObject);
     procedure btnChangePassClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     procedure CreateFormItem;
     { Private declarations }
@@ -66,13 +68,29 @@ begin
 end;
 
 procedure TfrmMainWindow.btnSearchClick(Sender: TObject);
+var
+  item, filterCondition: string;
+  index: byte;
+  Splitted: TArray<String>;
 begin
   with dmMain.cdsItemsList do
   begin
     try
       Filtered := False;
       case searchFieldSelect.ItemIndex of
-        0: Filter := 'UPPER(description) Like ''%' + AnsiUpperCase(searchText.Text) + '%''';
+        0: begin
+          Splitted := AnsiUpperCase(searchText.Text).Split([' ', ',', ';', '\', '/']);
+          filterCondition := '';
+          index := 0;
+          for item in Splitted do
+          begin
+            inc(index);
+            filterCondition := filterCondition + '(UPPER(description) Like ''%' + item + '%'')';
+            if index <> Length(Splitted) then
+              filterCondition := filterCondition + ' OR ';
+          end;
+          Filter := filterCondition;
+        end;
         1: Filter := Format('box_number = %d', [StrToInt(searchText.Text)]);
         2: Filter := Format('year = %d', [StrToInt(searchText.Text)]);
       end;
@@ -84,13 +102,20 @@ begin
   end;
 end;
 
+procedure TfrmMainWindow.Button1Click(Sender: TObject);
+begin
+  dmMain.frxReport1.FileName := 'object_list.fr3';
+  dmMain.frxReport1.ShowReport(True);
+end;
+
 procedure TfrmMainWindow.DBGrid1DblClick(Sender: TObject);
 begin
   CreateFormItem;
   dmMain.qryItemsCRUD.Close;
   dmMain.qryItemsCRUD.ParamByName('id').AsInteger := dmMain.cdsItemsList.FieldByName('id').AsInteger;
   dmMain.qryItemsCRUD.Open;
-  dmMain.qryItemsCRUD.Edit;
+  if not dmMain.dbConnection.UpdateOptions.ReadOnly then
+    dmMain.qryItemsCRUD.Edit;
   frmItemForm.Show;
 end;
 
@@ -112,6 +137,7 @@ begin
   if dmMain.dbConnection.Connected = true then
   begin
     dmMain.cdsItemsList.Active := true;
+    btnNewItem.Enabled := not dmMain.dbConnection.UpdateOptions.ReadOnly;
   end;
 end;
 
